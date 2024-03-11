@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "306118995829",
+    "project_id": "nxtventory",
+    "storage_bucket": "nxtventory.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306118995829:android:797742a3bce29e53b8ad3c",
+        "android_client_info": {
+          "package_name": "cat.nxtventory"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7NxSJ71l59Vm6sDdaYAZPjaBtN4PZ-Go"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
