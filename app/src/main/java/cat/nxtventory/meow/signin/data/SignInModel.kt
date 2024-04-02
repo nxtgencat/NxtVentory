@@ -37,8 +37,7 @@ class SignInModel : ViewModel() {
                 // Reset the sign-in progress when the sign-in process is complete
                 signInProgress.value = false
                 if (user != null) {
-                    navigator?.popAll()
-                    navigator?.replace(NxtVentory())
+                    navigator?.replaceAll(NxtVentory())
                     UserDataManager.saveUserId(context, user.uid)
                     Log.d("MyApp", "Saved User ID: ${user.uid}")
                 } else {
