@@ -1,17 +1,22 @@
 package cat.nxtventory.meow.signout
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -23,7 +28,8 @@ import cat.nxtventory.ui.theme.myTypography
 
 @Composable
 fun SignOutScreen(innerPadding: PaddingValues) {
-
+    val signOutProgress = rememberSaveable { mutableStateOf(false) }
+    val signedOut = rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
 
     MaterialTheme(
@@ -34,24 +40,38 @@ fun SignOutScreen(innerPadding: PaddingValues) {
                 .fillMaxSize()
                 .padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Bottom
         ) {
 
             Button(
                 modifier = Modifier
                     .width(250.dp)
                     .height(60.dp),
+                enabled = !signOutProgress.value && !signedOut.value,
                 onClick = {
+
                     UserDataManager.signOut(context) {
+                        signOutProgress.value = true
                         Log.d("MyApp", "Signed out successfully")
+                        Toast.makeText(
+                            context,
+                            "Signed out successfully.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        signedOut.value = true
                     }
                 }
             ) {
-                Text(
-                    text = "Signout",
-                    style = MaterialTheme.typography.titleMedium
-                )
+                if (signOutProgress.value && !signedOut.value) {
+                    CircularProgressIndicator()
+                } else {
+                    Text(
+                        text = "Logout",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
             }
+            Spacer(modifier = Modifier.height(30.dp))
         }
     }
 }

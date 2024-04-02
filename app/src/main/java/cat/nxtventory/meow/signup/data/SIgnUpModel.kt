@@ -21,13 +21,13 @@ class SignUpModel : ViewModel() {
     val isPasswordVisible = mutableStateOf(false)
     val emailError = mutableStateOf(false)
     val passwordError = mutableStateOf(false)
-    val SignUpProgress = mutableStateOf(false)
+    val signUpProgress = mutableStateOf(false)
 
     fun SignUpButtonClick(
         navControllerX: NavController,
         context: Context,
     ) {
-        SignUpProgress.value = true
+        signUpProgress.value = true
         emailError.value = !isEmailValid(email.value)
         passwordError.value =
             !isPasswordStrong(password.value)
@@ -36,7 +36,7 @@ class SignUpModel : ViewModel() {
                 email.value,
                 password.value
             ) { user, exception ->
-                SignUpProgress.value = false
+                signUpProgress.value = false
                 if (user != null) {
                     Toast.makeText(
                         context,
@@ -92,7 +92,7 @@ class SignUpModel : ViewModel() {
                 }
             }
         } else {
-            SignUpProgress.value = false
+            signUpProgress.value = false
         }
     }
 

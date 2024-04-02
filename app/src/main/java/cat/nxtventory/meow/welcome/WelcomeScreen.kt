@@ -66,8 +66,9 @@ fun WelcomeScreen(navControllerX: NavController) {
         }
     }
 }
+
 @Composable
-fun TopBarUI() {
+private fun TopBarUI() {
     Text(
         text = "Get started!",
         style = MaterialTheme.typography.displayMedium,
@@ -80,7 +81,7 @@ fun TopBarUI() {
 }
 
 @Composable
-fun BottomBarUI(navControllerX: NavController) {
+private fun BottomBarUI(navControllerX: NavController) {
     Button(
         modifier = Modifier
             .width(250.dp)

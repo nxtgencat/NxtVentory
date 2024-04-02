@@ -128,7 +128,7 @@ fun SignInScreen(navControllerX: NavController) {
 }
 
 @Composable
-fun TopBarUI() {
+private fun TopBarUI() {
     Text(
         text = "Login",
         style = MaterialTheme.typography.displayMedium,
@@ -141,7 +141,7 @@ fun TopBarUI() {
 }
 
 @Composable
-fun EmailTextField(viewModel: SignInModel) {
+private fun EmailTextField(viewModel: SignInModel) {
     OutlinedTextField(
         modifier = Modifier
             .height(90.dp)
@@ -175,7 +175,7 @@ fun EmailTextField(viewModel: SignInModel) {
 }
 
 @Composable
-fun PasswordTextField(viewModel: SignInModel) {
+private fun PasswordTextField(viewModel: SignInModel) {
     OutlinedTextField(
         modifier = Modifier
             .height(90.dp)
@@ -215,7 +215,7 @@ fun PasswordTextField(viewModel: SignInModel) {
 }
 
 @Composable
-fun LoginButton(viewModel: SignInModel, navControllerX: NavController, context: Context) {
+private fun LoginButton(viewModel: SignInModel, navControllerX: NavController, context: Context) {
     Button(
         modifier = Modifier
             .width(250.dp)
@@ -235,7 +235,7 @@ fun LoginButton(viewModel: SignInModel, navControllerX: NavController, context: 
 }
 
 @Composable
-fun SignUpTextButton(viewModel: SignInModel, navControllerX: NavController) {
+private fun SignUpTextButton(viewModel: SignInModel, navControllerX: NavController) {
 
     TextButton(
         onClick = { viewModel.SignUpButtonClick(navControllerX) }

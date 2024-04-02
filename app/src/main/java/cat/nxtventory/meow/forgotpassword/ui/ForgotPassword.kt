@@ -36,10 +36,9 @@ import androidx.navigation.compose.rememberNavController
 import cat.nxtventory.meow.forgotpassword.data.ForgotPasswordModel
 import cat.nxtventory.ui.theme.myTypography
 
-
 @Composable
 fun ForgotPasswordScreen(
-    navControllerX: NavController
+    navControllerX: NavController,
 ) {
     val context = LocalContext.current
     val viewModel: ForgotPasswordModel = viewModel()
@@ -105,7 +104,7 @@ fun ForgotPasswordScreen(
 }
 
 @Composable
-fun TopBarUI() {
+private fun TopBarUI() {
     Text(
         text = "Forgot password",
         style = MaterialTheme.typography.displayMedium,
@@ -118,8 +117,8 @@ fun TopBarUI() {
 }
 
 @Composable
-fun EmailTextField(
-    viewModel: ForgotPasswordModel
+private fun EmailTextField(
+    viewModel: ForgotPasswordModel,
 ) {
     OutlinedTextField(
         modifier = Modifier
@@ -154,9 +153,9 @@ fun EmailTextField(
 }
 
 @Composable
-fun ResetPasswordButton(
+private fun ResetPasswordButton(
     viewModel: ForgotPasswordModel,
-    context: Context
+    context: Context,
 ) {
     Button(
         modifier = Modifier
@@ -177,8 +176,8 @@ fun ResetPasswordButton(
 }
 
 @Composable
-fun GoBackTextButton(
-    navControllerX: NavController
+private fun GoBackTextButton(
+    navControllerX: NavController,
 ) {
     TextButton(
         onClick = { navControllerX.popBackStack() }

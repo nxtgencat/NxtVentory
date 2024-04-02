@@ -122,7 +122,7 @@ fun SignUpScreen(navControllerX: NavController) {
 }
 
 @Composable
-fun TopBarUI() {
+private fun TopBarUI() {
     Text(
         text = "Signup",
         style = MaterialTheme.typography.displayMedium,
@@ -135,7 +135,7 @@ fun TopBarUI() {
 }
 
 @Composable
-fun UsernameTextField(viewModel: SignUpModel) {
+private fun UsernameTextField(viewModel: SignUpModel) {
     OutlinedTextField(
         modifier = Modifier
             .height(90.dp)
@@ -167,7 +167,7 @@ fun UsernameTextField(viewModel: SignUpModel) {
 }
 
 @Composable
-fun EmailTextField(viewModel: SignUpModel) {
+private fun EmailTextField(viewModel: SignUpModel) {
     OutlinedTextField(
         modifier = Modifier
             .height(90.dp)
@@ -201,7 +201,7 @@ fun EmailTextField(viewModel: SignUpModel) {
 }
 
 @Composable
-fun PasswordTextField(viewModel: SignUpModel) {
+private fun PasswordTextField(viewModel: SignUpModel) {
     OutlinedTextField(
         modifier = Modifier
             .height(90.dp)
@@ -241,15 +241,15 @@ fun PasswordTextField(viewModel: SignUpModel) {
 }
 
 @Composable
-fun SignUpButton(viewModel: SignUpModel, context: Context, navControllerX: NavController) {
+private fun SignUpButton(viewModel: SignUpModel, context: Context, navControllerX: NavController) {
     Button(
         modifier = Modifier
             .width(250.dp)
             .height(60.dp),
-        enabled = !viewModel.SignUpProgress.value && viewModel.email.value.isNotEmpty() && viewModel.password.value.isNotEmpty(),
+        enabled = !viewModel.signUpProgress.value && viewModel.email.value.isNotEmpty() && viewModel.password.value.isNotEmpty(),
         onClick = { viewModel.SignUpButtonClick(navControllerX, context) }
     ) {
-        if (viewModel.SignUpProgress.value) {
+        if (viewModel.signUpProgress.value) {
             CircularProgressIndicator()
         } else {
             Text(
