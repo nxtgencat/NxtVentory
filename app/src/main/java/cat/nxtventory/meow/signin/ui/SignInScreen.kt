@@ -40,20 +40,20 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import cat.nxtventory.meow.forgotpassword.ui.ForgotPasswordScreen
 import cat.nxtventory.meow.signin.data.SignInModel
 import cat.nxtventory.ui.theme.myTypography
 
 class SignInScreen : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
+        val navigator = LocalNavigator.current
         SignInScreenUI(navigator)
     }
 }
 
 @Composable
-private fun SignInScreenUI(navigator: Navigator) {
+private fun SignInScreenUI(navigator: Navigator?) {
     val context = LocalContext.current
     val viewModel: SignInModel = viewModel()
     MaterialTheme(
@@ -100,7 +100,7 @@ private fun SignInScreenUI(navigator: Navigator) {
                             modifier = Modifier.align(Alignment.End)
                         ) {
                             TextButton(
-                                onClick = { }
+                                onClick = { navigator?.push(ForgotPasswordScreen()) }
                             ) {
                                 Text(
                                     text = "Forgot Password?",
@@ -224,7 +224,7 @@ private fun PasswordTextField(viewModel: SignInModel) {
 }
 
 @Composable
-private fun LoginButton(viewModel: SignInModel, context: Context, navigator: Navigator) {
+private fun LoginButton(viewModel: SignInModel, context: Context, navigator: Navigator?) {
     Button(
         modifier = Modifier
             .width(250.dp)
@@ -244,7 +244,7 @@ private fun LoginButton(viewModel: SignInModel, context: Context, navigator: Nav
 }
 
 @Composable
-private fun SignUpTextButton(viewModel: SignInModel, navigator: Navigator) {
+private fun SignUpTextButton(viewModel: SignInModel, navigator: Navigator?) {
 
     TextButton(
         onClick = { viewModel.SignUpTextButtonClick(navigator) }
@@ -259,6 +259,6 @@ private fun SignUpTextButton(viewModel: SignInModel, navigator: Navigator) {
 @Preview(showSystemUi = true)
 @Composable
 fun SignInPreview() {
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = LocalNavigator.current
     SignInScreenUI(navigator)
 }

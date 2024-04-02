@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import cat.nxtventory.R
 import cat.nxtventory.meow.signin.ui.SignInScreen
 import cat.nxtventory.meow.signup.ui.SignUpScreen
@@ -31,17 +30,17 @@ import cat.nxtventory.ui.theme.myTypography
 class WelcomeScreen : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
+        val navigator = LocalNavigator.current
         WelcomeScreenUI(navigator)
     }
 
 }
 
 @Composable
-private fun WelcomeScreenUI(navigator: Navigator) {
+private fun WelcomeScreenUI(navigator: Navigator?) {
 
     MaterialTheme(
-        typography = myTypography // Applying custom typography here
+        typography = myTypography
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -93,14 +92,14 @@ private fun TopBarUI() {
 }
 
 @Composable
-private fun BottomBarUI(navigator: Navigator) {
+private fun BottomBarUI(navigator: Navigator?) {
 
     Button(
         modifier = Modifier
             .width(250.dp)
             .height(60.dp),
         onClick = {
-            navigator.push(SignInScreen())
+            navigator?.push(SignInScreen())
         }
     ) {
         Text(
@@ -114,7 +113,7 @@ private fun BottomBarUI(navigator: Navigator) {
             .width(250.dp)
             .height(60.dp),
         onClick = {
-            navigator.push(SignUpScreen())
+            navigator?.push(SignUpScreen())
         }
     ) {
         Text(
@@ -128,6 +127,8 @@ private fun BottomBarUI(navigator: Navigator) {
 @Preview(showSystemUi = true)
 @Composable
 fun WelcomeScreenPreview() {
-    val navigator = LocalNavigator.currentOrThrow
+
+    val navigator = LocalNavigator.current
     WelcomeScreenUI(navigator)
+
 }

@@ -33,7 +33,6 @@ import androidx.navigation.compose.rememberNavController
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import cat.nxtventory.meow.navigation.Navigate
 import cat.nxtventory.meow.navigation.data.navDraweritems
 import cat.nxtventory.meow.navigation.ui.NavigationDrawer
@@ -44,13 +43,13 @@ import kotlinx.coroutines.launch
 class NxtVentory : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
+        val navigator = LocalNavigator.current
         NxtVentoryUI(navigator)
     }
 }
 
 @Composable
-fun NxtVentoryUI(navigator: Navigator) {
+fun NxtVentoryUI(navigator: Navigator?) {
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -69,7 +68,7 @@ fun NxtVentoryUI(navigator: Navigator) {
             navDraweritems[0].title
         }
     MaterialTheme(
-        typography = myTypography // Applying custom typography here
+        typography = myTypography
     ) {
         ModalNavigationDrawer(
             drawerState = drawerState,
@@ -141,7 +140,7 @@ fun NxtVentoryTopBar(
 
 
 @Composable
-fun NxtVentoryFAB(navController: NavController) { // Accept NavController parameter
+fun NxtVentoryFAB(navController: NavController) {
     FloatingActionButton(
         modifier = Modifier.padding(20.dp),
         onClick = {
@@ -161,6 +160,6 @@ fun NxtVentoryFAB(navController: NavController) { // Accept NavController parame
 @Preview(showSystemUi = true)
 @Composable
 fun NxtVentoryPreview() {
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = LocalNavigator.current
     NxtVentoryUI(navigator)
 }

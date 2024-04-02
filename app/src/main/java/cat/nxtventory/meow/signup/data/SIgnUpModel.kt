@@ -10,7 +10,6 @@ import cat.nxtventory.meow.firebase.FirebaseManager
 import cat.nxtventory.meow.firebase.isEmailValid
 import cat.nxtventory.meow.firebase.isPasswordStrong
 import cat.nxtventory.meow.signin.ui.SignInScreen
-import cat.nxtventory.meow.welcome.WelcomeScreen
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
@@ -26,7 +25,7 @@ class SignUpModel : ViewModel() {
 
     fun SignUpButtonClick(
         context: Context,
-        navigator: Navigator
+        navigator: Navigator?,
     ) {
         signUpProgress.value = true
         emailError.value = !isEmailValid(email.value)
@@ -44,7 +43,7 @@ class SignUpModel : ViewModel() {
                         "Account Created",
                         Toast.LENGTH_SHORT
                     ).show()
-                    navigator.push(SignInScreen())
+                    navigator?.push(SignInScreen())
                 } else {
                     exception?.let {
                         when (it) {
@@ -89,8 +88,8 @@ class SignUpModel : ViewModel() {
         }
     }
 
-    fun SignInTextButtonClick(navigator: Navigator) {
-        navigator.pop()
-        navigator.push(SignInScreen())
+    fun SignInTextButtonClick(navigator: Navigator?) {
+        navigator?.pop()
+        navigator?.push(SignInScreen())
     }
 }

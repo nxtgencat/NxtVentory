@@ -40,25 +40,24 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import cat.nxtventory.meow.signup.data.SignUpModel
 import cat.nxtventory.ui.theme.myTypography
 
 class SignUpScreen : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
+        val navigator = LocalNavigator.current
         SignUpScreenUI(navigator)
     }
 }
 
 @Composable
-private fun SignUpScreenUI(navigator: Navigator) {
+private fun SignUpScreenUI(navigator: Navigator?) {
     val context = LocalContext.current
     val viewModel: SignUpModel = viewModel()
 
     MaterialTheme(
-        typography = myTypography // Applying custom typography here
+        typography = myTypography
     ) {
         Surface(
             color = MaterialTheme.colorScheme.surface
@@ -251,7 +250,7 @@ private fun PasswordTextField(viewModel: SignUpModel) {
 }
 
 @Composable
-private fun SignUpButton(viewModel: SignUpModel, context: Context,navigator: Navigator) {
+private fun SignUpButton(viewModel: SignUpModel, context: Context, navigator: Navigator?) {
     Button(
         modifier = Modifier
             .width(250.dp)
@@ -273,7 +272,7 @@ private fun SignUpButton(viewModel: SignUpModel, context: Context,navigator: Nav
 @Composable
 fun LoginTextButton(
     viewModel: SignUpModel,
-    navigator: Navigator
+    navigator: Navigator?,
 ) {
     TextButton(
         onClick = { viewModel.SignInTextButtonClick(navigator) }
@@ -288,6 +287,6 @@ fun LoginTextButton(
 @Preview(showSystemUi = true)
 @Composable
 fun SignUpScreenPreview() {
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = LocalNavigator.current
     SignUpScreenUI(navigator)
 }

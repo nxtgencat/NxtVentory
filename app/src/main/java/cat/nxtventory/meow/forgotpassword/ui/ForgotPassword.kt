@@ -31,19 +31,28 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cat.nxtventory.meow.forgotpassword.data.ForgotPasswordModel
 import cat.nxtventory.ui.theme.myTypography
 
+class ForgotPasswordScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.current
+        ForgotPasswordScreenUI(navigator)
+    }
+}
+
 @Composable
-fun ForgotPasswordScreen(
-    navControllerX: NavController,
-) {
+fun ForgotPasswordScreenUI(navigator: Navigator?) {
+
     val context = LocalContext.current
     val viewModel: ForgotPasswordModel = viewModel()
+
     MaterialTheme(
-        typography = myTypography // Applying custom typography here
+        typography = myTypography
     ) {
         Surface(
             color = MaterialTheme.colorScheme.surface
@@ -92,7 +101,7 @@ fun ForgotPasswordScreen(
 
                         Spacer(modifier = Modifier.height(30.dp))
 
-                        GoBackTextButton(navControllerX)
+                        GoBackTextButton(navigator)
 
                         Spacer(modifier = Modifier.height(50.dp))
                     }
@@ -176,11 +185,9 @@ private fun ResetPasswordButton(
 }
 
 @Composable
-private fun GoBackTextButton(
-    navControllerX: NavController,
-) {
+private fun GoBackTextButton(navigator: Navigator?) {
     TextButton(
-        onClick = { navControllerX.popBackStack() }
+        onClick = { navigator?.pop() }
     ) {
         Text(
             text = "Go back",
@@ -192,5 +199,6 @@ private fun GoBackTextButton(
 @Preview(showSystemUi = true)
 @Composable
 fun ForgotPasswordScreenPreview() {
-    ForgotPasswordScreen(navControllerX = rememberNavController())
+    val navigator = LocalNavigator.current
+    ForgotPasswordScreenUI(navigator)
 }

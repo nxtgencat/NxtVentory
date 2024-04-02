@@ -20,11 +20,6 @@ import androidx.compose.material.icons.outlined.Wallet
 import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class Screen(val route: String) {
-    Welcome("welcome"),
-    SignIn("signin"),
-    SignUp("signup"),
-    ForgotPassword("forgotpassword"),
-    NxtVentory("nxtventory"),
     Home("home"),
     Billing("billing"),
     Inventory("inventory"),
@@ -50,7 +45,7 @@ val navDraweritems = listOf(
         unSelectedIcon = Icons.Outlined.Home,
     ),
     NavigationItem(
-        title = "Billling",
+        title = "Billing",
         route = Screen.Billing.route,
         selectedIcon = Icons.Filled.Receipt,
         unSelectedIcon = Icons.Outlined.Receipt,
