@@ -1,7 +1,6 @@
 package cat.nxtventory.meow.forgotpassword.ui
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,14 +33,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import cat.nxtventory.meow.firebase.FirebaseManager.sendPasswordResetEmail
-import cat.nxtventory.meow.firebase.isEmailValid
 import cat.nxtventory.meow.forgotpassword.data.ForgotPasswordModel
 import cat.nxtventory.ui.theme.myTypography
 
 
 @Composable
-fun ForgotPasswordScreen(navControllerX: NavController) {
+fun ForgotPasswordScreen(
+    navControllerX: NavController
+) {
     val context = LocalContext.current
     val viewModel: ForgotPasswordModel = viewModel()
     MaterialTheme(
@@ -119,7 +118,9 @@ fun TopBarUI() {
 }
 
 @Composable
-fun EmailTextField(viewModel: ForgotPasswordModel) {
+fun EmailTextField(
+    viewModel: ForgotPasswordModel
+) {
     OutlinedTextField(
         modifier = Modifier
             .height(90.dp)
@@ -153,40 +154,16 @@ fun EmailTextField(viewModel: ForgotPasswordModel) {
 }
 
 @Composable
-fun ResetPasswordButton(viewModel: ForgotPasswordModel, context: Context) {
+fun ResetPasswordButton(
+    viewModel: ForgotPasswordModel,
+    context: Context
+) {
     Button(
         modifier = Modifier
             .width(250.dp)
             .height(60.dp),
         enabled = !viewModel.ResetProgress.value && viewModel.email.value.isNotEmpty(),
-        onClick = {
-            viewModel.ResetProgress.value = true
-            viewModel.emailError.value = !isEmailValid(viewModel.email.value)
-            if (!viewModel.emailError.value) {
-                sendPasswordResetEmail(
-                    viewModel.email.value,
-                    onSuccess = {
-                        // Password reset email sent successfully
-                        Toast.makeText(
-                            context,
-                            "Password reset email sent",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        viewModel.ResetProgress.value = false
-                    },
-                    onFailure = { errorMessage ->
-                        // Failed to send password reset email
-                        Toast.makeText(
-                            context,
-                            "Failed to send reset email: $errorMessage",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        viewModel.ResetProgress.value = false
-                    }
-                )
-
-            }
-        }
+        onClick = { viewModel.ResetPasswordButtonClick(context) }
     ) {
         if (viewModel.ResetProgress.value) {
             CircularProgressIndicator()
@@ -200,7 +177,9 @@ fun ResetPasswordButton(viewModel: ForgotPasswordModel, context: Context) {
 }
 
 @Composable
-fun GoBackTextButton(navControllerX: NavController) {
+fun GoBackTextButton(
+    navControllerX: NavController
+) {
     TextButton(
         onClick = { navControllerX.popBackStack() }
     ) {

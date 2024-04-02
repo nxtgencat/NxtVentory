@@ -1,8 +1,6 @@
 package cat.nxtventory.meow.signin.ui
 
 import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,10 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import cat.nxtventory.meow.firebase.FirebaseManager.signIn
-import cat.nxtventory.meow.firebase.UserDataManager
-import cat.nxtventory.meow.firebase.isEmailValid
-import cat.nxtventory.meow.firebase.isPasswordStrong
 import cat.nxtventory.meow.navigation.data.Screen
 import cat.nxtventory.meow.signin.data.SignInModel
 import cat.nxtventory.ui.theme.myTypography
@@ -123,7 +117,7 @@ fun SignInScreen(navControllerX: NavController) {
                         )
                         Spacer(modifier = Modifier.height(10.dp))
 
-                        SignUpTextButton(navControllerX)
+                        SignUpTextButton(viewModel, navControllerX)
 
                         Spacer(modifier = Modifier.height(50.dp))
                     }
@@ -226,42 +220,10 @@ fun LoginButton(viewModel: SignInModel, navControllerX: NavController, context: 
         modifier = Modifier
             .width(250.dp)
             .height(60.dp),
-        enabled = !viewModel.SignInProgress.value && viewModel.email.value.isNotEmpty() && viewModel.password.value.isNotEmpty(),
-        onClick = {
-            viewModel.SignInProgress.value = true
-            viewModel.emailError.value = !isEmailValid(viewModel.email.value)
-            viewModel.passwordError.value = !isPasswordStrong(viewModel.password.value)
-            if (!viewModel.emailError.value && !viewModel.passwordError.value) {
-                signIn(
-                    viewModel.email.value,
-                    viewModel.password.value
-                ) { user, errorMessage ->
-                    // Reset the sign-in progress when the sign-in process is complete
-                    viewModel.SignInProgress.value = false
-                    if (user != null) {
-                        navControllerX.navigate(Screen.NxtVentory.route) {
-                            navControllerX.graph.startDestinationRoute?.let {
-                                popUpTo(it) {
-                                    inclusive = true
-                                }
-                            }
-                        }
-                        UserDataManager.saveUserId(context, user.uid)
-                        Log.d("MyApp", "Saved User ID: ${user.uid}")
-                    } else {
-                        Toast.makeText(
-                            context,
-                            errorMessage,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            } else {
-                viewModel.SignInProgress.value = false
-            }
-        }
+        enabled = !viewModel.signInProgress.value && viewModel.email.value.isNotEmpty() && viewModel.password.value.isNotEmpty(),
+        onClick = { viewModel.SignInButtonClick(navControllerX, context) }
     ) {
-        if (viewModel.SignInProgress.value) {
+        if (viewModel.signInProgress.value) {
             CircularProgressIndicator() // Show CircularProgressIndicator when sign-in is in progress
         } else {
             Text(
@@ -273,19 +235,10 @@ fun LoginButton(viewModel: SignInModel, navControllerX: NavController, context: 
 }
 
 @Composable
-fun SignUpTextButton(navControllerX: NavController) {
+fun SignUpTextButton(viewModel: SignInModel, navControllerX: NavController) {
+
     TextButton(
-        onClick = {
-            navControllerX.navigate(Screen.SignUp.route) {
-                navControllerX.graph.startDestinationRoute?.let { startDestinationRoute ->
-                    popUpTo(startDestinationRoute) {
-                        saveState = true
-                    }
-                }
-                launchSingleTop = true
-                restoreState = true
-            }
-        }
+        onClick = { viewModel.SignUpButtonClick(navControllerX) }
     ) {
         Text(
             text = "Create Account",

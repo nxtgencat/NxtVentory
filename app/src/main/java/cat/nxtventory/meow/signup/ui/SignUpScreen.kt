@@ -1,8 +1,6 @@
 package cat.nxtventory.meow.signup.ui
 
-import android.accounts.NetworkErrorException
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,14 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import cat.nxtventory.meow.firebase.FirebaseManager.signUp
-import cat.nxtventory.meow.firebase.isEmailValid
-import cat.nxtventory.meow.firebase.isPasswordStrong
-import cat.nxtventory.meow.navigation.data.Screen
 import cat.nxtventory.meow.signup.data.SignUpModel
 import cat.nxtventory.ui.theme.myTypography
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
 @Composable
 fun SignUpScreen(navControllerX: NavController) {
@@ -117,7 +109,7 @@ fun SignUpScreen(navControllerX: NavController) {
                         )
                         Spacer(modifier = Modifier.height(10.dp))
 
-                        LoginTextButton(navControllerX)
+                        LoginTextButton(viewModel, navControllerX)
 
                         Spacer(modifier = Modifier.height(50.dp))
 
@@ -255,78 +247,10 @@ fun SignUpButton(viewModel: SignUpModel, context: Context, navControllerX: NavCo
             .width(250.dp)
             .height(60.dp),
         enabled = !viewModel.SignUpProgress.value && viewModel.email.value.isNotEmpty() && viewModel.password.value.isNotEmpty(),
-        onClick = {
-            viewModel.SignUpProgress.value = true
-            viewModel.emailError.value = !isEmailValid(viewModel.email.value)
-            viewModel.passwordError.value =
-                !isPasswordStrong(viewModel.password.value)
-            if (!viewModel.emailError.value && !viewModel.passwordError.value) {
-                signUp(
-                    viewModel.email.value,
-                    viewModel.password.value
-                ) { user, exception ->
-                    viewModel.SignUpProgress.value = false
-                    if (user != null) {
-                        Toast.makeText(
-                            context,
-                            "Account Created",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        navControllerX.navigate(Screen.SignIn.route) {
-                            navControllerX.graph.startDestinationRoute?.let { startDestinationRoute ->
-                                popUpTo(startDestinationRoute) {
-                                    saveState = true
-                                }
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    } else {
-                        exception?.let {
-                            when (it) {
-                                is FirebaseAuthUserCollisionException -> {
-                                    Toast.makeText(
-                                        context,
-                                        "Account already exists!",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-
-                                is FirebaseAuthWeakPasswordException -> {
-                                    Toast.makeText(
-                                        context,
-                                        "Password is too weak!",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-
-                                is NetworkErrorException -> {
-                                    Toast.makeText(
-                                        context,
-                                        "Network error. Please try again!",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-
-                                else -> {
-                                    Toast.makeText(
-                                        context,
-                                        "Something went wrong!",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                        }
-
-                    }
-                }
-            } else {
-                viewModel.SignUpProgress.value = false
-            }
-        }
+        onClick = { viewModel.SignUpButtonClick(navControllerX, context) }
     ) {
         if (viewModel.SignUpProgress.value) {
-            CircularProgressIndicator() // Show CircularProgressIndicator when sign-in is in progress
+            CircularProgressIndicator()
         } else {
             Text(
                 text = "Signup",
@@ -337,19 +261,12 @@ fun SignUpButton(viewModel: SignUpModel, context: Context, navControllerX: NavCo
 }
 
 @Composable
-fun LoginTextButton(navControllerX: NavController) {
+fun LoginTextButton(
+    viewModel: SignUpModel,
+    navControllerX: NavController,
+) {
     TextButton(
-        onClick = {
-            navControllerX.navigate(Screen.SignIn.route) {
-                navControllerX.graph.startDestinationRoute?.let { startDestinationRoute ->
-                    popUpTo(startDestinationRoute) {
-                        saveState = true
-                    }
-                }
-                launchSingleTop = true
-                restoreState = true
-            }
-        }
+        onClick = { viewModel.SignInButtonClick(navControllerX) }
     ) {
         Text(
             text = "Login",

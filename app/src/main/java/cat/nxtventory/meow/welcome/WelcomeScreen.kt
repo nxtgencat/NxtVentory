@@ -66,8 +66,6 @@ fun WelcomeScreen(navControllerX: NavController) {
         }
     }
 }
-
-
 @Composable
 fun TopBarUI() {
     Text(
