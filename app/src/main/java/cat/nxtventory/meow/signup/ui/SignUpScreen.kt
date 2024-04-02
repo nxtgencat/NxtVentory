@@ -37,13 +37,23 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import cat.nxtventory.meow.signup.data.SignUpModel
 import cat.nxtventory.ui.theme.myTypography
 
+class SignUpScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        SignUpScreenUI(navigator)
+    }
+}
+
 @Composable
-fun SignUpScreen(navControllerX: NavController) {
+private fun SignUpScreenUI(navigator: Navigator) {
     val context = LocalContext.current
     val viewModel: SignUpModel = viewModel()
 
@@ -100,7 +110,7 @@ fun SignUpScreen(navControllerX: NavController) {
                         verticalArrangement = Arrangement.Bottom
                     ) {
 
-                        SignUpButton(viewModel, context, navControllerX)
+                        SignUpButton(viewModel, context, navigator)
 
                         Spacer(modifier = Modifier.height(30.dp))
                         Text(
@@ -109,7 +119,7 @@ fun SignUpScreen(navControllerX: NavController) {
                         )
                         Spacer(modifier = Modifier.height(10.dp))
 
-                        LoginTextButton(viewModel, navControllerX)
+                        LoginTextButton(viewModel, navigator)
 
                         Spacer(modifier = Modifier.height(50.dp))
 
@@ -241,13 +251,13 @@ private fun PasswordTextField(viewModel: SignUpModel) {
 }
 
 @Composable
-private fun SignUpButton(viewModel: SignUpModel, context: Context, navControllerX: NavController) {
+private fun SignUpButton(viewModel: SignUpModel, context: Context,navigator: Navigator) {
     Button(
         modifier = Modifier
             .width(250.dp)
             .height(60.dp),
         enabled = !viewModel.signUpProgress.value && viewModel.email.value.isNotEmpty() && viewModel.password.value.isNotEmpty(),
-        onClick = { viewModel.SignUpButtonClick(navControllerX, context) }
+        onClick = { viewModel.SignUpButtonClick(context, navigator) }
     ) {
         if (viewModel.signUpProgress.value) {
             CircularProgressIndicator()
@@ -263,10 +273,10 @@ private fun SignUpButton(viewModel: SignUpModel, context: Context, navController
 @Composable
 fun LoginTextButton(
     viewModel: SignUpModel,
-    navControllerX: NavController,
+    navigator: Navigator
 ) {
     TextButton(
-        onClick = { viewModel.SignInButtonClick(navControllerX) }
+        onClick = { viewModel.SignInTextButtonClick(navigator) }
     ) {
         Text(
             text = "Login",
@@ -278,5 +288,6 @@ fun LoginTextButton(
 @Preview(showSystemUi = true)
 @Composable
 fun SignUpScreenPreview() {
-    SignUpScreen(navControllerX = rememberNavController())
+    val navigator = LocalNavigator.currentOrThrow
+    SignUpScreenUI(navigator)
 }

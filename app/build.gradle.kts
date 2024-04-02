@@ -73,6 +73,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.material.icons.extended.android)
-    implementation(libs.androidx.datastore.preferences)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.voyager.navigator) // Navigator
+    implementation(libs.voyager.tab.navigator) // TabNavigator
+    implementation(libs.voyager.transitions) // Transitions
+
+
 }

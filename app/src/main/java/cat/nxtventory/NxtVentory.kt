@@ -30,17 +30,27 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import cat.nxtventory.meow.billing.ui.BillnigScreenBottomBar
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import cat.nxtventory.meow.navigation.Navigate
-import cat.nxtventory.meow.navigation.data.Screen
 import cat.nxtventory.meow.navigation.data.navDraweritems
 import cat.nxtventory.meow.navigation.ui.NavigationDrawer
 import cat.nxtventory.ui.theme.myTypography
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+class NxtVentory : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        NxtVentoryUI(navigator)
+    }
+}
+
 @Composable
-fun NxtVentory(navControllerX: NavController) {
+fun NxtVentoryUI(navigator: Navigator) {
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -85,17 +95,10 @@ fun NxtVentory(navControllerX: NavController) {
                     Navigate(navController = navController, innerPadding = innerPadding)
                 },
                 floatingActionButton = {
-                    when (currentRoute) {
-                        Screen.Billing.route, Screen.Settings.route, Screen.Account.route -> {}
-                        else -> {
-                            NxtVentoryFAB(navController)
-                        }
-                    }
+
                 },
                 bottomBar = {
-                    when (currentRoute) {
-                        Screen.Billing.route -> BillnigScreenBottomBar()
-                    }
+
                 }
             )
         }
@@ -142,13 +145,7 @@ fun NxtVentoryFAB(navController: NavController) { // Accept NavController parame
     FloatingActionButton(
         modifier = Modifier.padding(20.dp),
         onClick = {
-            navController.navigate(Screen.Billing.route) {
-                popUpTo(navController.graph.startDestinationId) {
-                    saveState = true
-                }
-                launchSingleTop = true
-                restoreState = true
-            }// Navigate to billing screen
+
         },
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
@@ -164,5 +161,6 @@ fun NxtVentoryFAB(navController: NavController) { // Accept NavController parame
 @Preview(showSystemUi = true)
 @Composable
 fun NxtVentoryPreview() {
-    NxtVentory(navControllerX = rememberNavController())
+    val navigator = LocalNavigator.currentOrThrow
+    NxtVentoryUI(navigator)
 }

@@ -19,14 +19,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import cat.nxtventory.R
-import cat.nxtventory.meow.navigation.data.Screen
+import cat.nxtventory.meow.signin.ui.SignInScreen
+import cat.nxtventory.meow.signup.ui.SignUpScreen
 import cat.nxtventory.ui.theme.myTypography
 
+class WelcomeScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        WelcomeScreenUI(navigator)
+    }
+
+}
+
 @Composable
-fun WelcomeScreen(navControllerX: NavController) {
+private fun WelcomeScreenUI(navigator: Navigator) {
 
     MaterialTheme(
         typography = myTypography // Applying custom typography here
@@ -61,7 +73,7 @@ fun WelcomeScreen(navControllerX: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom
             ) {
-                BottomBarUI(navControllerX)
+                BottomBarUI(navigator)
             }
         }
     }
@@ -81,13 +93,14 @@ private fun TopBarUI() {
 }
 
 @Composable
-private fun BottomBarUI(navControllerX: NavController) {
+private fun BottomBarUI(navigator: Navigator) {
+
     Button(
         modifier = Modifier
             .width(250.dp)
             .height(60.dp),
         onClick = {
-            navControllerX.navigate(Screen.SignIn.route)
+            navigator.push(SignInScreen())
         }
     ) {
         Text(
@@ -101,7 +114,7 @@ private fun BottomBarUI(navControllerX: NavController) {
             .width(250.dp)
             .height(60.dp),
         onClick = {
-            navControllerX.navigate(Screen.SignUp.route)
+            navigator.push(SignUpScreen())
         }
     ) {
         Text(
@@ -114,6 +127,7 @@ private fun BottomBarUI(navControllerX: NavController) {
 
 @Preview(showSystemUi = true)
 @Composable
-fun WelcomeScreenPreview1() {
-    WelcomeScreen(navControllerX = rememberNavController())
+fun WelcomeScreenPreview() {
+    val navigator = LocalNavigator.currentOrThrow
+    WelcomeScreenUI(navigator)
 }

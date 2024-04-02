@@ -5,12 +5,15 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
+import cafe.adriel.voyager.core.stack.popUntil
+import cafe.adriel.voyager.navigator.Navigator
+import cat.nxtventory.NxtVentory
 import cat.nxtventory.meow.firebase.FirebaseManager
 import cat.nxtventory.meow.firebase.UserDataManager
 import cat.nxtventory.meow.firebase.isEmailValid
 import cat.nxtventory.meow.firebase.isPasswordStrong
-import cat.nxtventory.meow.navigation.data.Screen
+import cat.nxtventory.meow.signup.ui.SignUpScreen
+import cat.nxtventory.meow.welcome.WelcomeScreen
 
 class SignInModel : ViewModel() {
 
@@ -22,8 +25,8 @@ class SignInModel : ViewModel() {
     val signInProgress = mutableStateOf(false)
 
     fun SignInButtonClick(
-        navControllerX: NavController,
         context: Context,
+        navigator: Navigator,
     ) {
         signInProgress.value = true
         emailError.value = !isEmailValid(email.value)
@@ -36,13 +39,8 @@ class SignInModel : ViewModel() {
                 // Reset the sign-in progress when the sign-in process is complete
                 signInProgress.value = false
                 if (user != null) {
-                    navControllerX.navigate(Screen.NxtVentory.route) {
-                        navControllerX.graph.startDestinationRoute?.let {
-                            popUpTo(it) {
-                                inclusive = true
-                            }
-                        }
-                    }
+                    navigator.popAll()
+                    navigator.push(NxtVentory())
                     UserDataManager.saveUserId(context, user.uid)
                     Log.d("MyApp", "Saved User ID: ${user.uid}")
                 } else {
@@ -58,15 +56,8 @@ class SignInModel : ViewModel() {
         }
     }
 
-    fun SignUpButtonClick(navControllerX: NavController) {
-        navControllerX.navigate(Screen.SignUp.route) {
-            navControllerX.graph.startDestinationRoute?.let { startDestinationRoute ->
-                popUpTo(startDestinationRoute) {
-                    saveState = true
-                }
-            }
-            launchSingleTop = true
-            restoreState = true
-        }
+    fun SignUpTextButtonClick(navigator: Navigator) {
+        navigator.pop()
+        navigator.push(SignUpScreen())
     }
 }

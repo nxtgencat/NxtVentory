@@ -9,10 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
+import cafe.adriel.voyager.navigator.Navigator
 import cat.nxtventory.meow.firebase.UserDataManager
-import cat.nxtventory.meow.navigation.NavigateX
+import cat.nxtventory.meow.welcome.WelcomeScreen
 import cat.nxtventory.ui.theme.NxtVentoryTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,12 +28,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    if (isLoggedIn) {
-                        Log.d("MyApp", "User is signed in")
-                        NxtVentory(navControllerX = rememberNavController())
-                    } else {
-                        MyApp()
-                    }
+                    MyApp(isLoggedIn)
                 }
             }
         }
@@ -40,7 +36,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyApp() {
-    val navControllerX = rememberNavController()
-    NavigateX(navControllerX)
+fun MyApp(isLoggedIn: Boolean) {
+    if (isLoggedIn) {
+        Log.d("MyApp", "User is signed in")
+        Navigator(NxtVentory())
+    } else {
+        Navigator(WelcomeScreen())
+//        { SlideTransition(navigator = it) }
+    }
 }
+

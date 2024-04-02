@@ -5,11 +5,12 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
+import cafe.adriel.voyager.navigator.Navigator
 import cat.nxtventory.meow.firebase.FirebaseManager
 import cat.nxtventory.meow.firebase.isEmailValid
 import cat.nxtventory.meow.firebase.isPasswordStrong
-import cat.nxtventory.meow.navigation.data.Screen
+import cat.nxtventory.meow.signin.ui.SignInScreen
+import cat.nxtventory.meow.welcome.WelcomeScreen
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
@@ -24,8 +25,8 @@ class SignUpModel : ViewModel() {
     val signUpProgress = mutableStateOf(false)
 
     fun SignUpButtonClick(
-        navControllerX: NavController,
         context: Context,
+        navigator: Navigator
     ) {
         signUpProgress.value = true
         emailError.value = !isEmailValid(email.value)
@@ -43,15 +44,7 @@ class SignUpModel : ViewModel() {
                         "Account Created",
                         Toast.LENGTH_SHORT
                     ).show()
-                    navControllerX.navigate(Screen.SignIn.route) {
-                        navControllerX.graph.startDestinationRoute?.let { startDestinationRoute ->
-                            popUpTo(startDestinationRoute) {
-                                saveState = true
-                            }
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navigator.push(SignInScreen())
                 } else {
                     exception?.let {
                         when (it) {
@@ -96,15 +89,8 @@ class SignUpModel : ViewModel() {
         }
     }
 
-    fun SignInButtonClick(navControllerX: NavController) {
-        navControllerX.navigate(Screen.SignIn.route) {
-            navControllerX.graph.startDestinationRoute?.let { startDestinationRoute ->
-                popUpTo(startDestinationRoute) {
-                    saveState = true
-                }
-            }
-            launchSingleTop = true
-            restoreState = true
-        }
+    fun SignInTextButtonClick(navigator: Navigator) {
+        navigator.pop()
+        navigator.push(SignInScreen())
     }
 }
