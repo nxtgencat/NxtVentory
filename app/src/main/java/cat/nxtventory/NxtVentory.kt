@@ -33,7 +33,9 @@ import androidx.navigation.compose.rememberNavController
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import cat.nxtventory.meow.billing.ui.BillnigScreenBottomBar
 import cat.nxtventory.meow.navigation.Navigate
+import cat.nxtventory.meow.navigation.data.ScaffScreen
 import cat.nxtventory.meow.navigation.data.navDraweritems
 import cat.nxtventory.meow.navigation.ui.NavigationDrawer
 import cat.nxtventory.ui.theme.myTypography
@@ -57,8 +59,6 @@ fun NxtVentoryUI(navigator: Navigator?) {
     val context = LocalContext.current
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-
-
     val topBarTitle =
         if (currentRoute != null) {
             navDraweritems[navDraweritems.indexOfFirst {
@@ -67,6 +67,7 @@ fun NxtVentoryUI(navigator: Navigator?) {
         } else {
             navDraweritems[0].title
         }
+
     MaterialTheme(
         typography = myTypography
     ) {
@@ -94,16 +95,22 @@ fun NxtVentoryUI(navigator: Navigator?) {
                     Navigate(navController = navController, innerPadding = innerPadding)
                 },
                 floatingActionButton = {
-
+                    when (currentRoute) {
+                        ScaffScreen.Billing.route, ScaffScreen.Settings.route, ScaffScreen.Account.route -> {}
+                        else -> {
+                            NxtVentoryFAB(navController)
+                        }
+                    }
                 },
                 bottomBar = {
-
+                    when (currentRoute) {
+                        ScaffScreen.Billing.route -> BillnigScreenBottomBar()
+                        else -> null
+                    }
                 }
             )
         }
     }
-
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -144,7 +151,13 @@ fun NxtVentoryFAB(navController: NavController) {
     FloatingActionButton(
         modifier = Modifier.padding(20.dp),
         onClick = {
-
+            navController.navigate(ScaffScreen.Billing.route) {
+                popUpTo(navController.graph.startDestinationId) {
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
         },
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()

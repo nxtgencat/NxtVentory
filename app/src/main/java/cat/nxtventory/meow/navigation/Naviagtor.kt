@@ -9,7 +9,7 @@ import cat.nxtventory.meow.billing.ui.BillingScreen
 import cat.nxtventory.meow.home.ui.HomeScreen
 import cat.nxtventory.meow.inventory.InventoryScreen
 import cat.nxtventory.meow.loyalty.LoyaltyScreen
-import cat.nxtventory.meow.navigation.data.Screen
+import cat.nxtventory.meow.navigation.data.ScaffScreen
 import cat.nxtventory.meow.refunds.RefundScreen
 import cat.nxtventory.meow.settings.SettingsScreen
 import cat.nxtventory.meow.signout.SignOutScreen
@@ -22,30 +22,30 @@ fun Navigate(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = ScaffScreen.Home.route
     ) {
-        composable(Screen.Home.route) {
+        composable(ScaffScreen.Home.route) {
             HomeScreen(innerPadding = innerPadding)
         }
-        composable(Screen.Billing.route) {
+        composable(ScaffScreen.Billing.route) {
             BillingScreen(innerPadding = innerPadding)
         }
-        composable(Screen.Inventory.route) {
+        composable(ScaffScreen.Inventory.route) {
             InventoryScreen(innerPadding = innerPadding)
         }
-        composable(Screen.Refund.route) {
+        composable(ScaffScreen.Refund.route) {
             RefundScreen(innerPadding = innerPadding)
         }
-        composable(Screen.Loyalty.route) {
+        composable(ScaffScreen.Loyalty.route) {
             LoyaltyScreen(innerPadding = innerPadding)
         }
-        composable(Screen.Vendor.route) {
+        composable(ScaffScreen.Vendor.route) {
             VendorScreen(innerPadding = innerPadding)
         }
-        composable(Screen.Settings.route) {
+        composable(ScaffScreen.Settings.route) {
             SettingsScreen(innerPadding = innerPadding)
         }
-        composable(Screen.Account.route) {
+        composable(ScaffScreen.Account.route) {
             SignOutScreen(innerPadding = innerPadding)
         }
     }

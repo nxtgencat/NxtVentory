@@ -19,7 +19,7 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Wallet
 import androidx.compose.ui.graphics.vector.ImageVector
 
-enum class Screen(val route: String) {
+enum class ScaffScreen(val route: String) {
     Home("home"),
     Billing("billing"),
     Inventory("inventory"),
@@ -40,49 +40,49 @@ data class NavigationItem(
 val navDraweritems = listOf(
     NavigationItem(
         title = "Home",
-        route = Screen.Home.route,
+        route = ScaffScreen.Home.route,
         selectedIcon = Icons.Filled.Home,
         unSelectedIcon = Icons.Outlined.Home,
     ),
     NavigationItem(
         title = "Billing",
-        route = Screen.Billing.route,
+        route = ScaffScreen.Billing.route,
         selectedIcon = Icons.Filled.Receipt,
         unSelectedIcon = Icons.Outlined.Receipt,
     ),
     NavigationItem(
         title = "Inventory",
-        route = Screen.Inventory.route,
+        route = ScaffScreen.Inventory.route,
         selectedIcon = Icons.Filled.Inventory,
         unSelectedIcon = Icons.Outlined.Inventory,
     ),
     NavigationItem(
         title = "Refunds",
-        route = Screen.Refund.route,
+        route = ScaffScreen.Refund.route,
         selectedIcon = Icons.Filled.Wallet,
         unSelectedIcon = Icons.Outlined.Wallet,
     ),
     NavigationItem(
         title = "Loyalty",
-        route = Screen.Loyalty.route,
+        route = ScaffScreen.Loyalty.route,
         selectedIcon = Icons.Filled.Loyalty,
         unSelectedIcon = Icons.Outlined.Loyalty,
     ),
     NavigationItem(
         title = "Vendor",
-        route = Screen.Vendor.route,
+        route = ScaffScreen.Vendor.route,
         selectedIcon = Icons.Filled.People,
         unSelectedIcon = Icons.Outlined.People,
     ),
     NavigationItem(
         title = "Settings",
-        route = Screen.Settings.route,
+        route = ScaffScreen.Settings.route,
         selectedIcon = Icons.Filled.Settings,
         unSelectedIcon = Icons.Outlined.Settings,
     ),
     NavigationItem(
         title = "Account",
-        route = Screen.Account.route,
+        route = ScaffScreen.Account.route,
         selectedIcon = Icons.Filled.Person,
         unSelectedIcon = Icons.Outlined.Person,
     )

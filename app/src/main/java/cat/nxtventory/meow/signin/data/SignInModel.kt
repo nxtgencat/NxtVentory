@@ -38,7 +38,7 @@ class SignInModel : ViewModel() {
                 signInProgress.value = false
                 if (user != null) {
                     navigator?.popAll()
-                    navigator?.push(NxtVentory())
+                    navigator?.replace(NxtVentory())
                     UserDataManager.saveUserId(context, user.uid)
                     Log.d("MyApp", "Saved User ID: ${user.uid}")
                 } else {

@@ -22,7 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.navigator.Navigator
 import cat.nxtventory.meow.firebase.UserDataManager
+import cat.nxtventory.meow.welcome.WelcomeScreen
 import cat.nxtventory.ui.theme.myTypography
 
 
@@ -49,7 +51,6 @@ fun SignOutScreen(innerPadding: PaddingValues) {
                     .height(60.dp),
                 enabled = !signOutProgress.value && !signedOut.value,
                 onClick = {
-
                     UserDataManager.signOut(context) {
                         signOutProgress.value = true
                         Log.d("MyApp", "Signed out successfully")
@@ -59,6 +60,7 @@ fun SignOutScreen(innerPadding: PaddingValues) {
                             Toast.LENGTH_SHORT
                         ).show()
                         signedOut.value = true
+                        
                     }
                 }
             ) {
