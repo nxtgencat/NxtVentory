@@ -77,12 +77,12 @@ object FirebaseManager {
                     "Invalid user credentials!"
                 }
             }
+
             is FirebaseAuthInvalidCredentialsException -> "Invalid email or password!"
             is NetworkErrorException -> "Network error. Please try again!"
             else -> "Something went wrong!"
         }
     }
-
 
 
     // Sign up with email and password
@@ -100,7 +100,6 @@ object FirebaseManager {
     }
 
 
-
     private fun getSignUpErrorMessage(exception: Exception?): String {
         return when (exception) {
             is FirebaseAuthUserCollisionException -> "Account already exists!"
@@ -109,8 +108,6 @@ object FirebaseManager {
             else -> "Something went wrong!"
         }
     }
-
-
 
 
     // Function to send password reset email

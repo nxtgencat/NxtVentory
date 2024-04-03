@@ -67,7 +67,6 @@ class SignUpModel : ViewModel() {
     }
 
 
-
     fun signInTextButtonClick(navigator: Navigator?) {
         navigator?.pop()
         navigator?.push(SignInScreen())
