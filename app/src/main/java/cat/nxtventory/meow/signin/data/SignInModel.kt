@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import cafe.adriel.voyager.navigator.Navigator
-import cat.nxtventory.NxtVentory
+import cat.nxtventory.meow.nxtventory.ui.NxtVentory
 import cat.nxtventory.meow.firebase.FirebaseManager
 import cat.nxtventory.meow.firebase.UserDataManager
 import cat.nxtventory.meow.firebase.isEmailValid

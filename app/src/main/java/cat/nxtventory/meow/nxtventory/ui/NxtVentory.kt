@@ -1,4 +1,4 @@
-package cat.nxtventory
+package cat.nxtventory.meow.nxtventory.ui
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -97,15 +97,12 @@ fun NxtVentoryUI(navigator: Navigator?) {
                 floatingActionButton = {
                     when (currentRoute) {
                         ScaffScreen.Billing.route, ScaffScreen.Settings.route, ScaffScreen.Account.route -> {}
-                        else -> {
-                            NxtVentoryFAB(navController)
-                        }
+                        else -> { NxtVentoryFAB(navController) }
                     }
                 },
                 bottomBar = {
                     when (currentRoute) {
                         ScaffScreen.Billing.route -> BillnigScreenBottomBar()
-                        else -> null
                     }
                 }
             )

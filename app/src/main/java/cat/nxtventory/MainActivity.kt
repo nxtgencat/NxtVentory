@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
 import cat.nxtventory.meow.firebase.UserDataManager
+import cat.nxtventory.meow.nxtventory.ui.NxtVentory
 import cat.nxtventory.meow.welcome.WelcomeScreen
 import cat.nxtventory.ui.theme.NxtVentoryTheme
 
