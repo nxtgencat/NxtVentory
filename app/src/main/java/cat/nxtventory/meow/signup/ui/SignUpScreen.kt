@@ -231,7 +231,7 @@ private fun PasswordTextField(viewModel: SignUpModel) {
             viewModel.passwordError.value = false
         },
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-        supportingText = { if (viewModel.passwordError.value) Text(text = "Invalid Password") },
+        supportingText = { if (viewModel.passwordError.value) Text(text = "Password is too weak!") },
         visualTransformation = if (viewModel.isPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(
@@ -256,7 +256,7 @@ private fun SignUpButton(viewModel: SignUpModel, context: Context, navigator: Na
             .width(250.dp)
             .height(60.dp),
         enabled = !viewModel.signUpProgress.value && viewModel.email.value.isNotEmpty() && viewModel.password.value.isNotEmpty(),
-        onClick = { viewModel.SignUpButtonClick(context, navigator) }
+        onClick = { viewModel.signUpButtonClick(context, navigator) }
     ) {
         if (viewModel.signUpProgress.value) {
             CircularProgressIndicator()
@@ -275,7 +275,7 @@ fun LoginTextButton(
     navigator: Navigator?,
 ) {
     TextButton(
-        onClick = { viewModel.SignInTextButtonClick(navigator) }
+        onClick = { viewModel.signInTextButtonClick(navigator) }
     ) {
         Text(
             text = "Login",

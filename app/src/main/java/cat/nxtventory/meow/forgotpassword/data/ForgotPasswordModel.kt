@@ -11,34 +11,36 @@ class ForgotPasswordModel : ViewModel() {
 
     val email = mutableStateOf("")
     val emailError = mutableStateOf(false)
-    val ResetProgress = mutableStateOf(false)
+    val resetProgress = mutableStateOf(false)
 
-    fun ResetPasswordButtonClick(context: Context) {
-        ResetProgress.value = true
+    fun resetPasswordButtonClick(context: Context) {
+        resetProgress.value = true
         emailError.value = !isEmailValid(email.value)
         if (!emailError.value) {
-            FirebaseManager.sendPasswordResetEmail(
-                email.value,
-                onSuccess = {
+            FirebaseManager.resetPassword(
+                email.value
+            ) { isSuccess, errorMessage ->
+                resetProgress.value = false
+                if (isSuccess) {
                     // Password reset email sent successfully
                     Toast.makeText(
                         context,
                         "Password reset email sent",
                         Toast.LENGTH_SHORT
                     ).show()
-                    ResetProgress.value = false
-                },
-                onFailure = { errorMessage ->
+                    email.value = ""
+                } else {
                     // Failed to send password reset email
                     Toast.makeText(
                         context,
-                        "Failed to send reset email: $errorMessage",
+                        errorMessage,
                         Toast.LENGTH_SHORT
                     ).show()
-                    ResetProgress.value = false
                 }
-            )
-
+            }
+        } else {
+            resetProgress.value = false
         }
     }
+
 }

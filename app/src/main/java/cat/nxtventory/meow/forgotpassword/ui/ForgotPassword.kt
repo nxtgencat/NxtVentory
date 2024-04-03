@@ -170,10 +170,10 @@ private fun ResetPasswordButton(
         modifier = Modifier
             .width(250.dp)
             .height(60.dp),
-        enabled = !viewModel.ResetProgress.value && viewModel.email.value.isNotEmpty(),
-        onClick = { viewModel.ResetPasswordButtonClick(context) }
+        enabled = !viewModel.resetProgress.value && viewModel.email.value.isNotEmpty(),
+        onClick = { viewModel.resetPasswordButtonClick(context) }
     ) {
-        if (viewModel.ResetProgress.value) {
+        if (viewModel.resetProgress.value) {
             CircularProgressIndicator()
         } else {
             Text(

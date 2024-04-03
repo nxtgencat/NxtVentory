@@ -1,9 +1,13 @@
 package cat.nxtventory.meow.firebase
 
 
+import android.accounts.NetworkErrorException
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 
 
@@ -50,49 +54,104 @@ object FirebaseManager {
     fun signIn(email: String, password: String, onComplete: (FirebaseUser?, String?) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                val errorMessage = when {
-                    task.exception != null -> {
-                        when (task.exception) {
-                            is FirebaseAuthInvalidCredentialsException -> "Invalid password"
-                            else -> "Sign-in failed"
-                        }
-                    }
-
-                    task.isSuccessful && auth.currentUser == null -> "User not found"
-                    else -> null
-                }
-                if (errorMessage != null) {
-                    onComplete(null, errorMessage)
-                } else {
+                if (task.isSuccessful) {
                     val user = auth.currentUser
-                    onComplete(user, null)
+                    if (user != null && user.isEmailVerified) {
+                        onComplete(user, null)
+                    } else {
+                        onComplete(null, "Email is not verified.")
+                    }
+                } else {
+                    val errorMessage = getSignInErrorMessage(task.exception)
+                    onComplete(null, errorMessage)
                 }
             }
     }
 
+    private fun getSignInErrorMessage(exception: Exception?): String {
+        return when (exception) {
+            is FirebaseAuthInvalidUserException -> {
+                if (exception.errorCode == "ERROR_USER_DISABLED") {
+                    "Your account has been disabled."
+                } else {
+                    "Invalid user credentials!"
+                }
+            }
+            is FirebaseAuthInvalidCredentialsException -> "Invalid email or password!"
+            is NetworkErrorException -> "Network error. Please try again!"
+            else -> "Something went wrong!"
+        }
+    }
+
+
+
     // Sign up with email and password
-    fun signUp(email: String, password: String, onComplete: (FirebaseUser?, Exception?) -> Unit) {
+    fun signUp(email: String, password: String, onComplete: (FirebaseUser?, String?) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     onComplete(user, null)
                 } else {
-                    onComplete(null, task.exception)
+                    val errorMessage = getSignUpErrorMessage(task.exception)
+                    onComplete(null, errorMessage)
                 }
             }
     }
 
+
+
+    private fun getSignUpErrorMessage(exception: Exception?): String {
+        return when (exception) {
+            is FirebaseAuthUserCollisionException -> "Account already exists!"
+            is FirebaseAuthWeakPasswordException -> "Password is too weak!"
+            is NetworkErrorException -> "Network error. Please try again!"
+            else -> "Something went wrong!"
+        }
+    }
+
+
+
+
     // Function to send password reset email
-    fun sendPasswordResetEmail(email: String, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+    fun resetPassword(email: String, onComplete: (Boolean, String?) -> Unit) {
         auth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    onSuccess()
+                    onComplete(true, null)
                 } else {
-                    onFailure(task.exception?.message ?: "Unknown error occurred")
+                    val errorMessage = getResetPasswordErrorMessage(task.exception)
+                    onComplete(false, errorMessage)
                 }
             }
+    }
+
+    private fun getResetPasswordErrorMessage(exception: Exception?): String {
+        return when (exception) {
+            is FirebaseAuthInvalidUserException -> "No user found with this email!"
+            is NetworkErrorException -> "Network error. Please try again!"
+            else -> "Something went wrong!"
+        }
+    }
+
+    fun sendEmailVerification(user: FirebaseUser?, onComplete: (Boolean, String?) -> Unit) {
+        user?.sendEmailVerification()
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onComplete(true, null)
+                } else {
+                    val errorMessage = getEmailVerificationErrorMessage(task.exception)
+                    onComplete(false, errorMessage)
+                }
+            }
+    }
+
+    private fun getEmailVerificationErrorMessage(exception: Exception?): String {
+        return when (exception) {
+            is FirebaseAuthInvalidUserException -> "No user found with this email!"
+            is NetworkErrorException -> "Network error. Please try again!"
+            else -> "Failed to send email verification. Please try again later."
+        }
     }
 
 }

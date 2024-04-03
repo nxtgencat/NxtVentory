@@ -230,7 +230,7 @@ private fun LoginButton(viewModel: SignInModel, context: Context, navigator: Nav
             .width(250.dp)
             .height(60.dp),
         enabled = !viewModel.signInProgress.value && viewModel.email.value.isNotEmpty() && viewModel.password.value.isNotEmpty(),
-        onClick = { viewModel.SignInButtonClick(context, navigator) }
+        onClick = { viewModel.signInButtonClick(context, navigator) }
     ) {
         if (viewModel.signInProgress.value) {
             CircularProgressIndicator() // Show CircularProgressIndicator when sign-in is in progress
@@ -247,7 +247,7 @@ private fun LoginButton(viewModel: SignInModel, context: Context, navigator: Nav
 private fun SignUpTextButton(viewModel: SignInModel, navigator: Navigator?) {
 
     TextButton(
-        onClick = { viewModel.SignUpTextButtonClick(navigator) }
+        onClick = { viewModel.signUpTextButtonClick(navigator) }
     ) {
         Text(
             text = "Create Account",

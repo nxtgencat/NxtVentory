@@ -22,7 +22,7 @@ class SignInModel : ViewModel() {
     val passwordError = mutableStateOf(false)
     val signInProgress = mutableStateOf(false)
 
-    fun SignInButtonClick(
+    fun signInButtonClick(
         context: Context,
         navigator: Navigator?,
     ) {
@@ -36,17 +36,27 @@ class SignInModel : ViewModel() {
             ) { user, errorMessage ->
                 // Reset the sign-in progress when the sign-in process is complete
                 signInProgress.value = false
-                if (user != null) {
+                if (user != null && user.isEmailVerified) {
                     navigator?.popAll()
-                    navigator?.replace(NxtVentory())
+                    navigator?.replaceAll(NxtVentory())
                     UserDataManager.saveUserId(context, user.uid)
                     Log.d("MyApp", "Saved User ID: ${user.uid}")
                 } else {
-                    Toast.makeText(
-                        context,
-                        errorMessage,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    if (user != null && !user.isEmailVerified) {
+                        // If email is not verified, display a message to the user
+                        Toast.makeText(
+                            context,
+                            "Email is not verified. Please verify your email.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        // Handle other sign-in errors
+                        Toast.makeText(
+                            context,
+                            errorMessage,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         } else {
@@ -54,7 +64,9 @@ class SignInModel : ViewModel() {
         }
     }
 
-    fun SignUpTextButtonClick(navigator: Navigator?) {
+
+
+    fun signUpTextButtonClick(navigator: Navigator?) {
         navigator?.pop()
         navigator?.push(SignUpScreen())
     }

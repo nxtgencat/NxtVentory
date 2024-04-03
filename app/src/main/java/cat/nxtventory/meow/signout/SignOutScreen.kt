@@ -22,11 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.stack.mutableStateStackOf
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import cat.nxtventory.meow.firebase.UserDataManager
-import cat.nxtventory.meow.welcome.WelcomeScreen
 import cat.nxtventory.ui.theme.myTypography
 
 
