@@ -40,6 +40,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import cat.nxtventory.meow.firebase.FirebaseManager
+import cat.nxtventory.meow.firebase.isUsernameValid
 import cat.nxtventory.meow.signup.data.SignUpModel
 import cat.nxtventory.ui.theme.myTypography
 
@@ -159,7 +161,28 @@ private fun UsernameTextField(viewModel: SignUpModel) {
             )
         },
         value = viewModel.username.value,
-        supportingText = { },
+        isError = viewModel.usernameError.value,
+        supportingText = {
+            if (viewModel.username.value.isNotEmpty()) {
+                if (isUsernameValid(viewModel.username.value)) {
+                    FirebaseManager.checkUsernameAvailability(viewModel.username.value) { isAvailable, resultMessage ->
+                        if (isAvailable) {
+                            viewModel.usernameAvailableMessage.value = "Username available"
+                            viewModel.isusernameAvailable.value = true
+                            viewModel.usernameError.value = false
+                        } else {
+                            viewModel.usernameAvailableMessage.value = "Username not available"
+                            viewModel.usernameError.value = true
+                        }
+                    }
+                    Text(text = viewModel.usernameAvailableMessage.value)
+                } else {
+                    viewModel.usernameError.value = true
+                    viewModel.usernameAvailableMessage.value = "Invalid username format"
+                    Text(text = "Invalid Username")
+                }
+            }
+        },
         onValueChange = {
             viewModel.username.value = it
         },
@@ -169,7 +192,7 @@ private fun UsernameTextField(viewModel: SignUpModel) {
         trailingIcon = {
             Icon(
                 imageVector = Icons.Default.Person,
-                contentDescription = if (viewModel.isPasswordVisible.value) "Hide password" else "Show password"
+                contentDescription = "user"
             )
         }
     )

@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 object UserDataManager {
@@ -36,6 +37,12 @@ object UserDataManager {
     }
 }
 
+
+fun isUsernameValid(username: String): Boolean {
+    val usernameRegex = Regex("^[a-zA-Z0-9_.-]{3,20}$")
+    return username.matches(usernameRegex)
+}
+
 fun isEmailValid(email: String): Boolean {
     val emailRegex = Regex("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,})+\$")
     return email.matches(emailRegex)
@@ -49,6 +56,26 @@ fun isPasswordStrong(password: String): Boolean {
 
 object FirebaseManager {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+
+
+    fun fetchEmailForUsername(username: String, onComplete: (String?, String?) -> Unit) {
+        FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("username", username)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (querySnapshot.isEmpty) {
+                    onComplete(null, "Username not found")
+                } else {
+                    val email = querySnapshot.documents.first().getString("email")
+                    onComplete(email, null) // Email found
+                }
+            }
+            .addOnFailureListener { exception ->
+                onComplete(null, "Error fetching email: ${exception.message}")
+            }
+    }
+
 
     // Sign in with email and password
     fun signIn(email: String, password: String, onComplete: (FirebaseUser?, String?) -> Unit) {
@@ -84,6 +111,23 @@ object FirebaseManager {
         }
     }
 
+
+    fun checkUsernameAvailability(username: String, onComplete: (Boolean, String?) -> Unit) {
+        FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("username", username)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (querySnapshot.isEmpty) {
+                    onComplete(true, "Username is available")
+                } else {
+                    onComplete(false, "Username already taken")
+                }
+            }
+            .addOnFailureListener { exception ->
+                onComplete(false, "Error checking username availability: ${exception.message}")
+            }
+    }
 
     // Sign up with email and password
     fun signUp(email: String, password: String, onComplete: (FirebaseUser?, String?) -> Unit) {

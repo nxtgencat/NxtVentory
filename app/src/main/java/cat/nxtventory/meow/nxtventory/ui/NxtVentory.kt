@@ -97,7 +97,9 @@ fun NxtVentoryUI(navigator: Navigator?) {
                 floatingActionButton = {
                     when (currentRoute) {
                         ScaffScreen.Billing.route, ScaffScreen.Settings.route, ScaffScreen.Account.route -> {}
-                        else -> { NxtVentoryFAB(navController) }
+                        else -> {
+                            NxtVentoryFAB(navController)
+                        }
                     }
                 },
                 bottomBar = {

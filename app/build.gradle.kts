@@ -64,7 +64,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose) // Naviagtion Compose
-    implementation(libs.firebase.auth.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -73,9 +73,14 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.material.icons.extended.android) // Material Icons Extended
-    implementation(libs.voyager.navigator) // Navigator
+    implementation(libs.voyager.navigator) // Voyager Navigation
     implementation(libs.voyager.tab.navigator) // TabNavigator
     implementation(libs.voyager.transitions) // Transitions
+
+    // Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
 
 
 }
