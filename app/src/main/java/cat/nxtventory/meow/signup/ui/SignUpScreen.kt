@@ -178,8 +178,8 @@ private fun UsernameTextField(viewModel: SignUpModel) {
                     Text(text = viewModel.usernameAvailableMessage.value)
                 } else {
                     viewModel.usernameError.value = true
-                    viewModel.usernameAvailableMessage.value = "Invalid username format"
-                    Text(text = "Invalid Username")
+                    viewModel.usernameAvailableMessage.value = "Invalid username"
+                    Text(text = viewModel.usernameAvailableMessage.value)
                 }
             }
         },

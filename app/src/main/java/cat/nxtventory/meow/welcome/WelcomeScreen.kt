@@ -99,7 +99,7 @@ private fun BottomBarUI(navigator: Navigator?) {
             .width(250.dp)
             .height(60.dp),
         onClick = {
-            navigator?.replace(SignInScreen())
+            navigator?.replaceAll(SignInScreen())
         }
     ) {
         Text(
