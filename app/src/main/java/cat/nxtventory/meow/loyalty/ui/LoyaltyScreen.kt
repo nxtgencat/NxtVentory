@@ -1,4 +1,4 @@
-package cat.nxtventory.meow.refunds
+package cat.nxtventory.meow.loyalty.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,7 @@ import cat.nxtventory.ui.theme.myTypography
 
 
 @Composable
-fun RefundScreen(innerPadding: PaddingValues) {
+fun LoyaltyScreen(innerPadding: PaddingValues) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -28,12 +28,12 @@ fun RefundScreen(innerPadding: PaddingValues) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        RefundScreenCard("Refunds")
+        LoyaltyScreenCard("Loyalty")
     }
 }
 
 @Composable
-fun RefundScreenCard(
+fun LoyaltyScreenCard(
     title: String,
 ) {
     Card(
@@ -56,17 +56,16 @@ fun RefundScreenCard(
                 text = title,
                 style = MaterialTheme.typography.titleSmall
             )
-
         }
     }
 }
 
 @Preview(showSystemUi = true)
 @Composable
-fun RefundScreenPreview() {
+fun LoyaltyScreenPreview() {
     MaterialTheme(
         typography = myTypography // Applying custom typography here
     ) {
-        RefundScreen(innerPadding = PaddingValues())
+        LoyaltyScreen(innerPadding = PaddingValues())
     }
 }

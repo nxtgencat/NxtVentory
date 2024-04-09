@@ -7,12 +7,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import cat.nxtventory.meow.billing.ui.BillingScreen
 import cat.nxtventory.meow.home.ui.HomeScreen
-import cat.nxtventory.meow.inventory.InventoryScreen
-import cat.nxtventory.meow.loyalty.LoyaltyScreen
+import cat.nxtventory.meow.inventory.ui.InventoryScreen
+import cat.nxtventory.meow.loyalty.ui.LoyaltyScreen
 import cat.nxtventory.meow.navigation.data.ScaffScreen
-import cat.nxtventory.meow.refunds.RefundScreen
-import cat.nxtventory.meow.settings.SettingsScreen
-import cat.nxtventory.meow.signout.SignOutScreen
+import cat.nxtventory.meow.refunds.ui.RefundScreen
+import cat.nxtventory.meow.settings.ui.SettingsScreen
+import cat.nxtventory.meow.signout.ui.SignOutScreen
 import cat.nxtventory.meow.vendor.VendorScreen
 
 @Composable

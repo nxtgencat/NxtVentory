@@ -13,13 +13,16 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 
 object UserDataManager {
-    fun saveUserId(context: Context, userId: String) {
+    fun saveUserInfo(context: Context, userId: String, username: String, email: String) {
         val sharedPref = context.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
             putString("user_id", userId)
+            putString("username", username)
+            putString("email", email)
             apply()
         }
     }
+
 
     fun isLoggedIn(context: Context): Boolean {
         val sharedPref = context.getSharedPreferences("user_info", Context.MODE_PRIVATE)
@@ -35,8 +38,18 @@ object UserDataManager {
         }
         onSignOut() // Call the callback after removing user ID
     }
+
+
+    fun getUsername(context: Context): String? {
+        val sharedPref = context.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        return sharedPref.getString("username", null)
+    }
 }
 
+fun isPasswordValid(password: String): Boolean {
+    val passwordRegex = Regex("^.{6,}\$")
+    return password.matches(passwordRegex)
+}
 
 fun isUsernameValid(username: String): Boolean {
     val usernameRegex = Regex("^[a-zA-Z0-9_.-]{3,20}$")

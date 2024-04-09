@@ -1,4 +1,4 @@
-package cat.nxtventory.meow.settings
+package cat.nxtventory.meow.settings.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

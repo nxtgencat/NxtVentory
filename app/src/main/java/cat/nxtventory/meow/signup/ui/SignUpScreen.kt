@@ -172,13 +172,14 @@ private fun UsernameTextField(viewModel: SignUpModel) {
                             viewModel.usernameError.value = false
                         } else {
                             viewModel.usernameAvailableMessage.value = "Username not available"
+                            viewModel.isusernameAvailable.value = false
                             viewModel.usernameError.value = true
                         }
                     }
                     Text(text = viewModel.usernameAvailableMessage.value)
                 } else {
-                    viewModel.usernameError.value = true
                     viewModel.usernameAvailableMessage.value = "Invalid username"
+                    viewModel.usernameError.value = true
                     Text(text = viewModel.usernameAvailableMessage.value)
                 }
             }
@@ -285,7 +286,7 @@ private fun SignUpButton(viewModel: SignUpModel, context: Context, navigator: Na
             CircularProgressIndicator()
         } else {
             Text(
-                text = "Signup",
+                text = "Sign up",
                 style = MaterialTheme.typography.titleMedium
             )
         }
@@ -301,7 +302,7 @@ fun LoginTextButton(
         onClick = { viewModel.signInTextButtonClick(navigator) }
     ) {
         Text(
-            text = "Login",
+            text = "Sign in",
             style = MaterialTheme.typography.titleMedium
         )
     }

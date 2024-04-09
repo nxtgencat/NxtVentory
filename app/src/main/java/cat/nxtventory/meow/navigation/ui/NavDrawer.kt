@@ -24,12 +24,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import cat.nxtventory.R
+import cat.nxtventory.meow.firebase.UserDataManager.getUsername
 import cat.nxtventory.meow.navigation.data.NavigationItem
 import cat.nxtventory.meow.navigation.data.navDraweritems
 import cat.nxtventory.ui.theme.myTypography
@@ -72,6 +74,8 @@ fun NavigationDrawer(
 
 @Composable
 fun NavDrawHeader() {
+    val context = LocalContext.current
+    val username = getUsername(context)
     Spacer(modifier = Modifier.height(10.dp))
     Text(
         modifier = Modifier.padding(start = 20.dp),
@@ -93,10 +97,12 @@ fun NavDrawHeader() {
             contentDescription = "welcome_logo"
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            text = "NXTGENCAT",
-            style = MaterialTheme.typography.labelMedium
-        )
+        if (username != null) {
+            Text(
+                text = username.uppercase(),
+                style = MaterialTheme.typography.labelMedium
+            )
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-package cat.nxtventory.meow.signout
+package cat.nxtventory.meow.signout.ui
 
 import android.util.Log
 import android.widget.Toast
@@ -67,7 +67,7 @@ fun SignOutScreen(innerPadding: PaddingValues) {
                     CircularProgressIndicator()
                 } else {
                     Text(
-                        text = "Logout",
+                        text = "Sign out",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }

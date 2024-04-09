@@ -103,7 +103,7 @@ private fun BottomBarUI(navigator: Navigator?) {
         }
     ) {
         Text(
-            text = "Login",
+            text = "Sign in",
             style = MaterialTheme.typography.titleMedium
         )
     }
@@ -117,7 +117,7 @@ private fun BottomBarUI(navigator: Navigator?) {
         }
     ) {
         Text(
-            text = "Create Account",
+            text = "Create account",
             style = MaterialTheme.typography.titleMedium
         )
     }

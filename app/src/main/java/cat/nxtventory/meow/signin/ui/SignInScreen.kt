@@ -14,7 +14,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -56,6 +57,8 @@ class SignInScreen : Screen {
 private fun SignInScreenUI(navigator: Navigator?) {
     val context = LocalContext.current
     val viewModel: SignInModel = viewModel()
+
+
     MaterialTheme(
         typography = myTypography // Applying custom typography here
     ) {
@@ -103,7 +106,7 @@ private fun SignInScreenUI(navigator: Navigator?) {
                                 onClick = { navigator?.push(ForgotPasswordScreen()) }
                             ) {
                                 Text(
-                                    text = "Forgot Password?",
+                                    text = "Forgot password?",
                                     style = MaterialTheme.typography.titleMedium
                                 )
                             }
@@ -136,6 +139,7 @@ private fun SignInScreenUI(navigator: Navigator?) {
     }
 }
 
+
 @Composable
 private fun TopBarUI() {
     Text(
@@ -158,25 +162,25 @@ private fun EmailTextField(viewModel: SignInModel) {
         shape = RoundedCornerShape(50.dp),
         singleLine = true,
         textStyle = MaterialTheme.typography.titleSmall,
-        value = viewModel.email.value,
+        value = viewModel.username.value,
         label = {
             Text(
-                text = "Email",
+                text = "Username",
                 style = MaterialTheme.typography.titleSmall
             )
         },
-        isError = viewModel.emailError.value,
-        supportingText = { if (viewModel.emailError.value) Text(text = "Invalid Email") },
+        isError = viewModel.usernameError.value,
+        supportingText = { if (viewModel.usernameError.value) Text(text = "Invalid username") },
         onValueChange = {
-            viewModel.email.value = it
-            viewModel.emailError.value = false
+            viewModel.username.value = it
+            viewModel.usernameError.value = false
         },
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Next
         ),
         trailingIcon = {
             Icon(
-                imageVector = Icons.Default.Email,
+                imageVector = Icons.Default.Person,
                 contentDescription = if (viewModel.isPasswordVisible.value) "Hide password" else "Show password"
             )
         }
@@ -205,7 +209,7 @@ private fun PasswordTextField(viewModel: SignInModel) {
             viewModel.passwordError.value = false
         },
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-        supportingText = { if (viewModel.passwordError.value) Text(text = "Invalid Password") },
+        supportingText = { if (viewModel.passwordError.value) Text(text = "Invalid password") },
         visualTransformation = if (viewModel.isPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(
@@ -229,14 +233,14 @@ private fun LoginButton(viewModel: SignInModel, context: Context, navigator: Nav
         modifier = Modifier
             .width(250.dp)
             .height(60.dp),
-        enabled = !viewModel.signInProgress.value && viewModel.email.value.isNotEmpty() && viewModel.password.value.isNotEmpty(),
+        enabled = !viewModel.signInProgress.value && viewModel.username.value.isNotEmpty() && viewModel.password.value.isNotEmpty(),
         onClick = { viewModel.signInButtonClick(context, navigator) }
     ) {
         if (viewModel.signInProgress.value) {
             CircularProgressIndicator() // Show CircularProgressIndicator when sign-in is in progress
         } else {
             Text(
-                text = "Login",
+                text = "Sign in",
                 style = MaterialTheme.typography.titleMedium
             )
         }
@@ -250,7 +254,7 @@ private fun SignUpTextButton(viewModel: SignInModel, navigator: Navigator?) {
         onClick = { viewModel.signUpTextButtonClick(navigator) }
     ) {
         Text(
-            text = "Create Account",
+            text = "Create account",
             style = MaterialTheme.typography.titleMedium
         )
     }
