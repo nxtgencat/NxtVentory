@@ -10,39 +10,40 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
 
 object UserDataManager {
-    fun saveUserInfo(context: Context, userId: String, username: String, email: String) {
-        val sharedPref = context.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+    fun saveUserInfo(context: Context, userID: String) {
+        val sharedPref = context.getSharedPreferences("users", Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
-            putString("user_id", userId)
-            putString("username", username)
-            putString("email", email)
+            putString("userID", userID)
             apply()
         }
     }
 
 
     fun isLoggedIn(context: Context): Boolean {
-        val sharedPref = context.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-        val userId = sharedPref.getString("user_id", null)
-        return userId != null
+        val sharedPref = context.getSharedPreferences("users", Context.MODE_PRIVATE)
+        val userID = sharedPref.getString("userID", null)
+        return userID != null
     }
 
     fun signOut(context: Context, onSignOut: () -> Unit) {
-        val sharedPref = context.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val sharedPref = context.getSharedPreferences("users", Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
-            remove("user_id")
+            remove("userID")
             apply()
         }
         onSignOut() // Call the callback after removing user ID
     }
 
-
-    fun getUsername(context: Context): String? {
-        val sharedPref = context.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-        return sharedPref.getString("username", null)
+    suspend fun getUserDetails(context: Context): Map<String, Any>? {
+        val sharedPref = context.getSharedPreferences("users", Context.MODE_PRIVATE)
+        val userID = sharedPref.getString("userID", null)
+        val db = FirebaseFirestore.getInstance()
+        val userDoc = userID?.let { db.collection("users").document(it).get().await() }
+        return userDoc?.data
     }
 }
 
@@ -68,34 +69,36 @@ fun isPasswordStrong(password: String): Boolean {
 }
 
 object FirebaseManager {
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-
 
     fun fetchEmailForUsername(username: String, onComplete: (String?, String?) -> Unit) {
         FirebaseFirestore.getInstance()
             .collection("users")
             .whereEqualTo("username", username)
             .get()
-            .addOnSuccessListener { querySnapshot ->
-                if (querySnapshot.isEmpty) {
-                    onComplete(null, "Username not found")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val querySnapshot = task.result
+                    if (querySnapshot != null && !querySnapshot.isEmpty) {
+                        val email = querySnapshot.documents.first().getString("email")
+                        onComplete(email, null) // Email found
+                    } else {
+                        onComplete(null, "Username not found")
+                    }
                 } else {
-                    val email = querySnapshot.documents.first().getString("email")
-                    onComplete(email, null) // Email found
+                    onComplete(null, "Error fetching email: ${task.exception?.message}")
                 }
-            }
-            .addOnFailureListener { exception ->
-                onComplete(null, "Error fetching email: ${exception.message}")
             }
     }
 
 
+
     // Sign in with email and password
     fun signIn(email: String, password: String, onComplete: (FirebaseUser?, String?) -> Unit) {
-        auth.signInWithEmailAndPassword(email, password)
+        FirebaseAuth.getInstance()
+            .signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val user = auth.currentUser
+                    val user = FirebaseAuth.getInstance().currentUser
                     if (user != null && user.isEmailVerified) {
                         onComplete(user, null)
                     } else {
@@ -130,24 +133,28 @@ object FirebaseManager {
             .collection("users")
             .whereEqualTo("username", username)
             .get()
-            .addOnSuccessListener { querySnapshot ->
-                if (querySnapshot.isEmpty) {
-                    onComplete(true, "Username is available")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val querySnapshot = task.result
+                    if (querySnapshot != null && !querySnapshot.isEmpty) {
+                        onComplete(false, "Username already taken")
+                    } else {
+                        onComplete(true, "Username is available")
+                    }
                 } else {
-                    onComplete(false, "Username already taken")
+                    onComplete(false, "Error checking username availability: ${task.exception?.message}")
                 }
-            }
-            .addOnFailureListener { exception ->
-                onComplete(false, "Error checking username availability: ${exception.message}")
             }
     }
 
+
     // Sign up with email and password
     fun signUp(email: String, password: String, onComplete: (FirebaseUser?, String?) -> Unit) {
-        auth.createUserWithEmailAndPassword(email, password)
+        FirebaseAuth.getInstance()
+            .createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val user = auth.currentUser
+                    val user = FirebaseAuth.getInstance().currentUser
                     onComplete(user, null)
                 } else {
                     val errorMessage = getSignUpErrorMessage(task.exception)
@@ -169,7 +176,8 @@ object FirebaseManager {
 
     // Function to send password reset email
     fun resetPassword(email: String, onComplete: (Boolean, String?) -> Unit) {
-        auth.sendPasswordResetEmail(email)
+        FirebaseAuth.getInstance()
+            .sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onComplete(true, null)

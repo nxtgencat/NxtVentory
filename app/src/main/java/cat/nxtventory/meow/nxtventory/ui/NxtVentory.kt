@@ -20,6 +20,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -34,6 +35,8 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cat.nxtventory.meow.billing.ui.BillnigScreenBottomBar
+import cat.nxtventory.meow.firebase.UserDataManager
+import cat.nxtventory.meow.firebase.UserDataManager.getUserDetails
 import cat.nxtventory.meow.navigation.Navigate
 import cat.nxtventory.meow.navigation.data.ScaffScreen
 import cat.nxtventory.meow.navigation.data.navDraweritems

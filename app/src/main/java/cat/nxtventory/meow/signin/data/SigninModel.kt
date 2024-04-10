@@ -18,7 +18,6 @@ class SignInModel : ViewModel() {
 
     val username = mutableStateOf("")
     val password = mutableStateOf("")
-    val emailx = mutableStateOf("")
     val isPasswordVisible = mutableStateOf(false)
     val usernameError = mutableStateOf(false)
     val passwordError = mutableStateOf(false)
@@ -32,7 +31,6 @@ class SignInModel : ViewModel() {
         if (!usernameError.value && !passwordError.value) {
             FirebaseManager.fetchEmailForUsername(username.value) { email, errorMessage ->
                 if (email != null) {
-                    emailx.value = email
                     signInWithEmail(context, navigator, email)
                 } else {
                     displayErrorMessage(context, errorMessage ?: "Unknown error occurred.")
@@ -63,12 +61,12 @@ class SignInModel : ViewModel() {
     ) {
         if (user != null && user.isEmailVerified) {
             navigator?.replaceAll(NxtVentory())
-            UserDataManager.saveUserInfo(context, user.uid, username.value, emailx.value)
+            UserDataManager.saveUserInfo(context, user.uid)
             Log.d("MyApp", "Saved User ID: ${user.uid}")
         } else {
             if (user != null && !user.isEmailVerified) {
                 // Set emailNotVerified LiveData to true if email is not verified
-
+                displayEmailNotVerifiedMessage(context)
             } else {
                 displayErrorMessage(context, errorMessage)
             }

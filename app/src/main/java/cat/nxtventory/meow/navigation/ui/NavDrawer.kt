@@ -1,9 +1,12 @@
 package cat.nxtventory.meow.navigation.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
@@ -21,7 +25,13 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -31,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import cat.nxtventory.R
-import cat.nxtventory.meow.firebase.UserDataManager.getUsername
+import cat.nxtventory.meow.firebase.UserDataManager
 import cat.nxtventory.meow.navigation.data.NavigationItem
 import cat.nxtventory.meow.navigation.data.navDraweritems
 import cat.nxtventory.ui.theme.myTypography
@@ -75,34 +85,85 @@ fun NavigationDrawer(
 @Composable
 fun NavDrawHeader() {
     val context = LocalContext.current
-    val username = getUsername(context)
-    Spacer(modifier = Modifier.height(10.dp))
-    Text(
-        modifier = Modifier.padding(start = 20.dp),
-        text = "NxtVentory",
-        style = MaterialTheme.typography.headlineMedium
-    )
-    Spacer(modifier = Modifier.height(10.dp))
+
+    var userDetails by remember { mutableStateOf<Map<String, Any>?>(null) }
+    LaunchedEffect(context) {
+        userDetails = UserDataManager.getUserDetails(context)
+    }
+
+    Column (
+        modifier = Modifier
+            .padding(start = 20.dp, top = 20.dp, bottom = 10.dp, end = 20.dp)
+    ){
+        Text(
+            text = "NxtVentory",
+            style = MaterialTheme.typography.headlineMedium
+        )
+    }
+
     HorizontalDivider()
-    Column(
+
+    Row(
         modifier = Modifier
             .height(150.dp)
             .padding(20.dp)
     ) {
-        Image(
-            modifier = Modifier
-                .size(75.dp)
-                .clip(CircleShape),
-            painter = painterResource(id = R.drawable.profile),
-            contentDescription = "welcome_logo"
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        if (username != null) {
-            Text(
-                text = username.uppercase(),
-                style = MaterialTheme.typography.labelMedium
-            )
+        if (userDetails == null) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+            }
+        } else{
+            Column (
+                modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                Image(
+                    modifier = Modifier
+                        .size(75.dp)
+                        .clip(CircleShape),
+                    painter = painterResource(id = R.drawable.profile),
+                    contentDescription = "welcome_logo"
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                userDetails?.let { user ->
+                    Text(
+                        text =  user["username"].toString().uppercase(),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
+
+            }
+            Spacer(modifier = Modifier.width(30.dp))
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center
+            ) {
+
+                UserDetailText(userDetails = userDetails, detail = "name")
+                Spacer(modifier = Modifier.height(15.dp))
+                UserDetailText(userDetails = userDetails, detail = "store")
+                Spacer(modifier = Modifier.height(15.dp))
+                UserDetailText(userDetails = userDetails, detail = "position")
+                Spacer(modifier = Modifier.height(15.dp))
+            }
         }
+
+    }
+
+}
+
+@Composable
+fun UserDetailText(userDetails:  Map<String, Any>?,detail: String){
+    userDetails?.let { user ->
+        Text(
+            text =  "${detail.uppercase()} : ${user[detail].toString().uppercase()}",
+            style = MaterialTheme.typography.labelMedium
+        )
     }
 }
 
