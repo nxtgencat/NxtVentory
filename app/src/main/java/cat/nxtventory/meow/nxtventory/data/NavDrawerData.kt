@@ -1,4 +1,4 @@
-package cat.nxtventory.meow.navigation.data
+package cat.nxtventory.meow.nxtventory.data
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -18,17 +18,7 @@ import androidx.compose.material.icons.outlined.Receipt
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Wallet
 import androidx.compose.ui.graphics.vector.ImageVector
-
-enum class ScaffScreen(val route: String) {
-    Home("home"),
-    Billing("billing"),
-    Inventory("inventory"),
-    Refund("refund"),
-    Loyalty("loyalty"),
-    Vendor("vendor"),
-    Settings("settings"),
-    Account("account"),
-}
+import cat.nxtventory.meow.navigation.ScaffScreen
 
 data class NavigationItem(
     val title: String,

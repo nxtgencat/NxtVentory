@@ -1,4 +1,4 @@
-package cat.nxtventory.meow.navigation.ui
+package cat.nxtventory.meow.nxtventory.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
@@ -44,8 +43,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import cat.nxtventory.R
 import cat.nxtventory.meow.firebase.UserDataManager
-import cat.nxtventory.meow.navigation.data.NavigationItem
-import cat.nxtventory.meow.navigation.data.navDraweritems
+import cat.nxtventory.meow.nxtventory.data.NavigationItem
+import cat.nxtventory.meow.nxtventory.data.navDraweritems
 import cat.nxtventory.ui.theme.myTypography
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

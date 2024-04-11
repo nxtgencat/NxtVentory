@@ -9,12 +9,21 @@ import cat.nxtventory.meow.billing.ui.BillingScreen
 import cat.nxtventory.meow.home.ui.HomeScreen
 import cat.nxtventory.meow.inventory.ui.InventoryScreen
 import cat.nxtventory.meow.loyalty.ui.LoyaltyScreen
-import cat.nxtventory.meow.navigation.data.ScaffScreen
 import cat.nxtventory.meow.refunds.ui.RefundScreen
 import cat.nxtventory.meow.settings.ui.SettingsScreen
 import cat.nxtventory.meow.account.ui.SignOutScreen
 import cat.nxtventory.meow.vendor.VendorScreen
 
+enum class ScaffScreen(val route: String) {
+    Home("home"),
+    Billing("billing"),
+    Inventory("inventory"),
+    Refund("refund"),
+    Loyalty("loyalty"),
+    Vendor("vendor"),
+    Settings("settings"),
+    Account("account"),
+}
 @Composable
 fun Navigate(
     navController: NavHostController,
