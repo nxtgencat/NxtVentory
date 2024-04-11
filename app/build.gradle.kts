@@ -77,12 +77,10 @@ dependencies {
     implementation(libs.voyager.tab.navigator) // TabNavigator
     implementation(libs.voyager.transitions) // Transitions
 
-    // Firebase BoM
+    // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
-
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.5")
-
 
 }

@@ -1,6 +1,5 @@
 [versions]
-agp = "8.3.1"
-
+agp = "8.3.2"
 kotlin = "1.9.0"
 coreKtx = "1.12.0"
 junit = "4.13.2"
@@ -12,9 +11,7 @@ composeBom = "2024.04.00"
 materialIconsExtendedAndroid = "1.6.5"
 navigationRuntimeKtx = "2.7.7"
 navigationCompose = "2.7.7"
-
 voyagerVersion = "1.0.0"
-
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -37,6 +34,7 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyagerVersion" }
 voyager-tab-navigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyagerVersion" }
 voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyagerVersion" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

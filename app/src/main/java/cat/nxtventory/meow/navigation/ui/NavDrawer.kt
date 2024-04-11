@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,6 +20,7 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItem
@@ -100,21 +102,15 @@ fun NavDrawHeader() {
             style = MaterialTheme.typography.headlineMedium
         )
     }
-
     HorizontalDivider()
-
     Row(
         modifier = Modifier
             .height(150.dp)
             .padding(20.dp)
     ) {
         if (userDetails == null) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CircularProgressIndicator()
+            Column(modifier = Modifier.fillMaxSize()) {
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
         } else{
             Column (
@@ -136,7 +132,6 @@ fun NavDrawHeader() {
                         style = MaterialTheme.typography.labelMedium
                     )
                 }
-
             }
             Spacer(modifier = Modifier.width(30.dp))
             Column(
@@ -214,7 +209,7 @@ fun NavDrawBody(
 @Composable
 fun NavigationDrawerPreview() {
     MaterialTheme(
-        typography = myTypography // Applying custom typography here
+        typography = myTypography
     ) {
         NavigationDrawer(
             currentRoute = null,
@@ -222,5 +217,6 @@ fun NavigationDrawerPreview() {
             scope = rememberCoroutineScope(),
             drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         )
+
     }
 }

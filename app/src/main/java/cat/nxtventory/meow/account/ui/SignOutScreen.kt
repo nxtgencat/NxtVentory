@@ -1,4 +1,4 @@
-package cat.nxtventory.meow.signout.ui
+package cat.nxtventory.meow.account.ui
 
 import android.util.Log
 import android.widget.Toast

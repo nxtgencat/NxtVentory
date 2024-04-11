@@ -47,6 +47,7 @@ private fun WelcomeScreenUI(navigator: Navigator?) {
         ) {
             Column(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .padding(all = 25.dp)
                     .weight(3f),
                 verticalArrangement = Arrangement.Center
@@ -60,10 +61,7 @@ private fun WelcomeScreenUI(navigator: Navigator?) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.nxtventory),
-                    contentDescription = "welcome_logo"
-                )
+                ContentUI()
             }
             Column(
                 modifier = Modifier
@@ -88,6 +86,14 @@ private fun TopBarUI() {
     Text(
         text = "Best way to manage your inventory",
         style = MaterialTheme.typography.titleLarge,
+    )
+}
+
+@Composable
+fun ContentUI(){
+    Icon(
+        painter = painterResource(id = R.drawable.nxtventory),
+        contentDescription = "welcome_logo"
     )
 }
 

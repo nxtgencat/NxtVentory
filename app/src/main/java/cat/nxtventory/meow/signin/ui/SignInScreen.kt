@@ -70,35 +70,29 @@ private fun SignInScreenUI(navigator: Navigator?) {
             ) {
                 Column(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .padding(all = 25.dp)
                         .weight(3f),
                     verticalArrangement = Arrangement.Center
                 ) {
-
                     TopBarUI()
-
                 }
                 Column(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
                         .weight(7f)
                         .background(color = MaterialTheme.colorScheme.surfaceContainer),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Spacer(
-                        modifier = Modifier
-                            .height(50.dp)
-                    )
+                    Spacer(modifier = Modifier.height(50.dp))
                     Column(
                         modifier = Modifier
                             .weight(6f)
                     ) {
-
                         EmailTextField(viewModel)
-
                         PasswordTextField(viewModel)
-
                         Box(
                             modifier = Modifier.align(Alignment.End)
                         ) {
@@ -119,18 +113,14 @@ private fun SignInScreenUI(navigator: Navigator?) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Bottom
                     ) {
-
                         LoginButton(viewModel, context, navigator)
-
                         Spacer(modifier = Modifier.height(30.dp))
                         Text(
                             text = "Don't have an account yet?",
                             style = MaterialTheme.typography.titleMedium
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-
                         SignUpTextButton(viewModel, navigator)
-
                         Spacer(modifier = Modifier.height(50.dp))
                     }
                 }

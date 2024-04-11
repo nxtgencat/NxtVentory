@@ -23,7 +23,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -61,74 +60,55 @@ private fun SignUpScreenUI(navigator: Navigator?) {
     MaterialTheme(
         typography = myTypography
     ) {
-        Surface(
-            color = MaterialTheme.colorScheme.surface
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
-
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 25.dp)
+                    .weight(3f),
+                verticalArrangement = Arrangement.Center
             ) {
-
+                TopBarUI()
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
+                    .weight(7f)
+                    .background(color = MaterialTheme.colorScheme.surfaceContainer),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(50.dp))
                 Column(
                     modifier = Modifier
-                        .padding(all = 25.dp)
-                        .weight(3f),
-                    verticalArrangement = Arrangement.Center
+                        .weight(6f)
                 ) {
-
-                    TopBarUI()
-
+                    UsernameTextField(viewModel)
+                    EmailTextField(viewModel)
+                    PasswordTextField(viewModel)
                 }
                 Column(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-                        .weight(7f)
-                        .background(color = MaterialTheme.colorScheme.surfaceContainer),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .fillMaxWidth()
+                        .weight(4f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom
                 ) {
-                    Spacer(
-                        modifier = Modifier
-                            .height(50.dp)
+                    SignUpButton(viewModel, context, navigator)
+                    Spacer(modifier = Modifier.height(30.dp))
+                    Text(
+                        text = "Already have an acoount?",
+                        style = MaterialTheme.typography.titleMedium
                     )
-                    Column(
-                        modifier = Modifier
-                            .weight(6f)
-                    ) {
-
-                        UsernameTextField(viewModel)
-
-                        EmailTextField(viewModel)
-
-                        PasswordTextField(viewModel)
-
-                    }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(4f),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Bottom
-                    ) {
-
-                        SignUpButton(viewModel, context, navigator)
-
-                        Spacer(modifier = Modifier.height(30.dp))
-                        Text(
-                            text = "Already have an acoount?",
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        LoginTextButton(viewModel, navigator)
-
-                        Spacer(modifier = Modifier.height(50.dp))
-
-                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    LoginTextButton(viewModel, navigator)
+                    Spacer(modifier = Modifier.height(50.dp))
                 }
             }
         }
-
     }
 }
 

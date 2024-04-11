@@ -12,7 +12,7 @@ import cat.nxtventory.meow.loyalty.ui.LoyaltyScreen
 import cat.nxtventory.meow.navigation.data.ScaffScreen
 import cat.nxtventory.meow.refunds.ui.RefundScreen
 import cat.nxtventory.meow.settings.ui.SettingsScreen
-import cat.nxtventory.meow.signout.ui.SignOutScreen
+import cat.nxtventory.meow.account.ui.SignOutScreen
 import cat.nxtventory.meow.vendor.VendorScreen
 
 @Composable
