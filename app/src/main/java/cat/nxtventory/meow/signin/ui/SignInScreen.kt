@@ -23,7 +23,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -47,83 +46,85 @@ import cat.nxtventory.ui.theme.NxtVentoryTheme
 class SignInScreen : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.current
-        SignInScreenUI(navigator)
+        SignInScreenUI()
     }
 }
 
 @Composable
-private fun SignInScreenUI(navigator: Navigator?) {
-    val context = LocalContext.current
+private fun SignInScreenUI() {
+
     val viewModel: SignInModel = viewModel()
 
-    Surface(
-        color = MaterialTheme.colorScheme.surface
+    val navigator = LocalNavigator.current
+    val context = LocalContext.current
+
+    Column(
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 25.dp)
+                .weight(3f),
+            verticalArrangement = Arrangement.Center
         ) {
+            TopBarUI()
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
+                .weight(7f)
+                .background(color = MaterialTheme.colorScheme.surfaceContainer),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(50.dp))
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 25.dp)
-                    .weight(3f),
-                verticalArrangement = Arrangement.Center
+                    .weight(6f)
             ) {
-                TopBarUI()
+                EmailTextField(viewModel)
+                PasswordTextField(viewModel)
+                Box(modifier = Modifier.align(Alignment.End)) {
+                    ForgotPassTextButton { navigator?.push(ForgotPasswordScreen()) }
+                }
             }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-                    .weight(7f)
-                    .background(color = MaterialTheme.colorScheme.surfaceContainer),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .weight(4f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Bottom
             ) {
+                SignInButton(viewModel, context, navigator)
+                Spacer(modifier = Modifier.height(30.dp))
+                Text(
+                    text = "Don't have an account yet?",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                SignUpTextButton(viewModel, navigator)
                 Spacer(modifier = Modifier.height(50.dp))
-                Column(
-                    modifier = Modifier
-                        .weight(6f)
-                ) {
-                    EmailTextField(viewModel)
-                    PasswordTextField(viewModel)
-                    Box(
-                        modifier = Modifier.align(Alignment.End)
-                    ) {
-                        TextButton(
-                            onClick = { navigator?.push(ForgotPasswordScreen()) }
-                        ) {
-                            Text(
-                                text = "Forgot password?",
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        }
-                    }
-                }
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(4f),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Bottom
-                ) {
-                    LoginButton(viewModel, context, navigator)
-                    Spacer(modifier = Modifier.height(30.dp))
-                    Text(
-                        text = "Don't have an account yet?",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    SignUpTextButton(viewModel, navigator)
-                    Spacer(modifier = Modifier.height(50.dp))
-                }
             }
         }
     }
 
 }
 
+@Composable
+fun ForgotPassTextButton(
+    onClick: () -> Unit
+) {
+    TextButton(
+        onClick = { onClick() }
+    ) {
+        Text(
+            text = "Forgot password?",
+            style = MaterialTheme.typography.titleMedium
+        )
+    }
+}
 
 @Composable
 private fun TopBarUI() {
@@ -139,7 +140,9 @@ private fun TopBarUI() {
 }
 
 @Composable
-private fun EmailTextField(viewModel: SignInModel) {
+private fun EmailTextField(
+    viewModel: SignInModel
+) {
     OutlinedTextField(
         modifier = Modifier
             .height(90.dp)
@@ -173,7 +176,9 @@ private fun EmailTextField(viewModel: SignInModel) {
 }
 
 @Composable
-private fun PasswordTextField(viewModel: SignInModel) {
+private fun PasswordTextField(
+    viewModel: SignInModel
+) {
     OutlinedTextField(
         modifier = Modifier
             .height(90.dp)
@@ -191,7 +196,7 @@ private fun PasswordTextField(viewModel: SignInModel) {
         isError = viewModel.passwordError.value,
         onValueChange = {
             viewModel.password.value = it
-            viewModel.passwordError.value = false
+            viewModel.passwordErrorReset()
         },
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         supportingText = { if (viewModel.passwordError.value) Text(text = "Invalid password") },
@@ -199,8 +204,7 @@ private fun PasswordTextField(viewModel: SignInModel) {
         trailingIcon = {
             IconButton(
                 onClick = {
-                    viewModel.isPasswordVisible.value =
-                        !viewModel.isPasswordVisible.value
+                    viewModel.togglePassVisibility()
                 }
             ) {
                 Icon(
@@ -213,12 +217,16 @@ private fun PasswordTextField(viewModel: SignInModel) {
 }
 
 @Composable
-private fun LoginButton(viewModel: SignInModel, context: Context, navigator: Navigator?) {
+private fun SignInButton(
+    viewModel: SignInModel,
+    context: Context,
+    navigator: Navigator?
+) {
     Button(
         modifier = Modifier
             .width(250.dp)
             .height(60.dp),
-        enabled = !viewModel.signInProgress.value && viewModel.username.value.isNotEmpty() && viewModel.password.value.isNotEmpty(),
+        enabled = viewModel.isSignInButtonEnabled(),
         onClick = { viewModel.signInButtonClick(context, navigator) }
     ) {
         if (viewModel.signInProgress.value) {
@@ -233,7 +241,10 @@ private fun LoginButton(viewModel: SignInModel, context: Context, navigator: Nav
 }
 
 @Composable
-private fun SignUpTextButton(viewModel: SignInModel, navigator: Navigator?) {
+private fun SignUpTextButton(
+    viewModel: SignInModel,
+    navigator: Navigator?
+) {
 
     TextButton(
         onClick = { viewModel.signUpTextButtonClick(navigator) }
@@ -249,7 +260,6 @@ private fun SignUpTextButton(viewModel: SignInModel, navigator: Navigator?) {
 @Composable
 fun SignInPreview() {
     NxtVentoryTheme {
-        val navigator = LocalNavigator.current
-        SignInScreenUI(navigator)
+        SignInScreenUI()
     }
 }

@@ -47,15 +47,15 @@ import cat.nxtventory.ui.theme.NxtVentoryTheme
 class SignUpScreen : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.current
-        SignUpScreenUI(navigator)
+        SignUpScreenUI()
     }
 }
 
 @Composable
-private fun SignUpScreenUI(navigator: Navigator?) {
+private fun SignUpScreenUI() {
     val context = LocalContext.current
     val viewModel: SignUpModel = viewModel()
+    val navigator = LocalNavigator.current
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -122,7 +122,9 @@ private fun TopBarUI() {
 }
 
 @Composable
-private fun UsernameTextField(viewModel: SignUpModel) {
+private fun UsernameTextField(
+    viewModel: SignUpModel
+) {
     OutlinedTextField(
         modifier = Modifier
             .height(90.dp)
@@ -145,7 +147,7 @@ private fun UsernameTextField(viewModel: SignUpModel) {
                         if (isAvailable) {
                             viewModel.usernameAvailableMessage.value = "Username available"
                             viewModel.isusernameAvailable.value = true
-                            viewModel.usernameError.value = false
+                            viewModel.usernameErrorReset()
                         } else {
                             viewModel.usernameAvailableMessage.value = "Username not available"
                             viewModel.isusernameAvailable.value = false
@@ -176,7 +178,9 @@ private fun UsernameTextField(viewModel: SignUpModel) {
 }
 
 @Composable
-private fun EmailTextField(viewModel: SignUpModel) {
+private fun EmailTextField(
+    viewModel: SignUpModel
+) {
     OutlinedTextField(
         modifier = Modifier
             .height(90.dp)
@@ -195,7 +199,7 @@ private fun EmailTextField(viewModel: SignUpModel) {
         supportingText = { if (viewModel.emailError.value) Text(text = "Invalid Email") },
         onValueChange = {
             viewModel.email.value = it
-            viewModel.emailError.value = false
+            viewModel.emailErrorReset()
         },
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Next
@@ -210,7 +214,9 @@ private fun EmailTextField(viewModel: SignUpModel) {
 }
 
 @Composable
-private fun PasswordTextField(viewModel: SignUpModel) {
+private fun PasswordTextField(
+    viewModel: SignUpModel
+) {
     OutlinedTextField(
         modifier = Modifier
             .height(90.dp)
@@ -228,17 +234,14 @@ private fun PasswordTextField(viewModel: SignUpModel) {
         isError = viewModel.passwordError.value,
         onValueChange = {
             viewModel.password.value = it
-            viewModel.passwordError.value = false
+            viewModel.passwordErrorReset()
         },
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         supportingText = { if (viewModel.passwordError.value) Text(text = "Password is too weak!") },
         visualTransformation = if (viewModel.isPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(
-                onClick = {
-                    viewModel.isPasswordVisible.value =
-                        !viewModel.isPasswordVisible.value
-                }
+                onClick = { viewModel.togglePassVisibility() }
             ) {
                 Icon(
                     imageVector = if (viewModel.isPasswordVisible.value) Icons.Default.VisibilityOff else Icons.Default.Visibility,
@@ -250,12 +253,16 @@ private fun PasswordTextField(viewModel: SignUpModel) {
 }
 
 @Composable
-private fun SignUpButton(viewModel: SignUpModel, context: Context, navigator: Navigator?) {
+private fun SignUpButton(
+    viewModel: SignUpModel,
+    context: Context,
+    navigator: Navigator?
+) {
     Button(
         modifier = Modifier
             .width(250.dp)
             .height(60.dp),
-        enabled = !viewModel.signUpProgress.value && viewModel.email.value.isNotEmpty() && viewModel.password.value.isNotEmpty(),
+        enabled = viewModel.isSignUpButtonEnabled(),
         onClick = { viewModel.signUpButtonClick(context, navigator) }
     ) {
         if (viewModel.signUpProgress.value) {
@@ -288,7 +295,6 @@ fun LoginTextButton(
 @Composable
 fun SignUpScreenPreview() {
     NxtVentoryTheme {
-        val navigator = LocalNavigator.current
-        SignUpScreenUI(navigator)
+        SignUpScreenUI()
     }
 }

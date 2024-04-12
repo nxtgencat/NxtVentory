@@ -30,14 +30,15 @@ import cat.nxtventory.ui.theme.NxtVentoryTheme
 class WelcomeScreen : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.current
-        WelcomeScreenUI(navigator)
+        WelcomeScreenUI()
     }
 
 }
 
 @Composable
-private fun WelcomeScreenUI(navigator: Navigator?) {
+private fun WelcomeScreenUI() {
+
+    val navigator = LocalNavigator.current
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -95,43 +96,55 @@ fun ContentUI() {
 }
 
 @Composable
-private fun BottomBarUI(navigator: Navigator?) {
+private fun BottomBarUI(
+    navigator: Navigator?
+) {
 
+    SignInButton { navigator?.replace(SignInScreen()) }
+    Spacer(modifier = Modifier.height(20.dp))
+    CreateAccountButton { navigator?.replace(SignUpScreen()) }
+    Spacer(modifier = Modifier.height(50.dp))
+
+}
+
+@Composable
+fun SignInButton(
+    onClick: () -> Unit
+) {
     Button(
         modifier = Modifier
             .width(250.dp)
             .height(60.dp),
-        onClick = {
-            navigator?.replaceAll(SignInScreen())
-        }
+        onClick = { onClick() }
     ) {
         Text(
             text = "Sign in",
             style = MaterialTheme.typography.titleMedium
         )
     }
-    Spacer(modifier = Modifier.height(20.dp))
+}
+
+@Composable
+fun CreateAccountButton(
+    onClick: () -> Unit
+) {
     OutlinedButton(
         modifier = Modifier
             .width(250.dp)
             .height(60.dp),
-        onClick = {
-            navigator?.replace(SignUpScreen())
-        }
+        onClick = { onClick() }
     ) {
         Text(
             text = "Create account",
             style = MaterialTheme.typography.titleMedium
         )
     }
-    Spacer(modifier = Modifier.height(50.dp))
 }
 
 @Preview(showSystemUi = true)
 @Composable
 fun WelcomeScreenPreview() {
     NxtVentoryTheme {
-        val navigator = LocalNavigator.current
-        WelcomeScreenUI(navigator)
+        WelcomeScreenUI()
     }
 }

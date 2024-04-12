@@ -1,6 +1,5 @@
 package cat.nxtventory.meow.firebase
 
-
 import android.accounts.NetworkErrorException
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
@@ -12,9 +11,11 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-
 object UserDataManager {
-    fun saveUserInfo(context: Context, userID: String) {
+    fun saveUserInfo(
+        context: Context,
+        userID: String
+    ) {
         val sharedPref = context.getSharedPreferences("users", Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
             putString("userID", userID)
@@ -22,14 +23,18 @@ object UserDataManager {
         }
     }
 
-
-    fun isLoggedIn(context: Context): Boolean {
+    fun isLoggedIn(
+        context: Context
+    ): Boolean {
         val sharedPref = context.getSharedPreferences("users", Context.MODE_PRIVATE)
         val userID = sharedPref.getString("userID", null)
         return userID != null
     }
 
-    fun signOut(context: Context, onSignOut: () -> Unit) {
+    fun signOut(
+        context: Context,
+        onSignOut: () -> Unit
+    ) {
         val sharedPref = context.getSharedPreferences("users", Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
             remove("userID")
@@ -38,7 +43,9 @@ object UserDataManager {
         onSignOut() // Call the callback after removing user ID
     }
 
-    suspend fun getUserDetails(context: Context): Map<String, Any>? {
+    suspend fun getUserDetails(
+        context: Context
+    ): Map<String, Any>? {
         val sharedPref = context.getSharedPreferences("users", Context.MODE_PRIVATE)
         val userID = sharedPref.getString("userID", null)
         val db = FirebaseFirestore.getInstance()
@@ -47,22 +54,45 @@ object UserDataManager {
     }
 }
 
-fun isPasswordValid(password: String): Boolean {
+fun isUsernamePassValid(
+    username: String,
+    password: String
+): Boolean {
+    return isUsernameValid(username) && isPasswordValid(password)
+}
+
+fun isUsernameEmailPassValid(
+    username: String,
+    email: String,
+    password: String
+): Boolean {
+    return isUsernameValid(username) && isEmailValid(email) && isPasswordStrong(password)
+}
+
+fun isPasswordValid(
+    password: String
+): Boolean {
     val passwordRegex = Regex("^.{6,}\$")
     return password.matches(passwordRegex)
 }
 
-fun isUsernameValid(username: String): Boolean {
+fun isUsernameValid(
+    username: String
+): Boolean {
     val usernameRegex = Regex("^[a-zA-Z0-9_.-]{3,20}$")
     return username.matches(usernameRegex)
 }
 
-fun isEmailValid(email: String): Boolean {
+fun isEmailValid(
+    email: String
+): Boolean {
     val emailRegex = Regex("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,})+\$")
     return email.matches(emailRegex)
 }
 
-fun isPasswordStrong(password: String): Boolean {
+fun isPasswordStrong(
+    password: String
+): Boolean {
     val passwordRegex =
         Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+\$).{8,}\$")
     return password.matches(passwordRegex)

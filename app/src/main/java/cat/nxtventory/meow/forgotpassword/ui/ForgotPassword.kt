@@ -147,7 +147,7 @@ private fun EmailTextField(
         supportingText = { if (viewModel.emailError.value) Text(text = "Invalid Email") },
         onValueChange = {
             viewModel.email.value = it
-            viewModel.emailError.value = false
+            viewModel.emailErrorReset()
         },
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Done
@@ -170,7 +170,7 @@ private fun ResetPasswordButton(
         modifier = Modifier
             .width(250.dp)
             .height(60.dp),
-        enabled = !viewModel.resetProgress.value && viewModel.email.value.isNotEmpty(),
+        enabled = viewModel.isResetButtonEnabled(),
         onClick = { viewModel.resetPasswordButtonClick(context) }
     ) {
         if (viewModel.resetProgress.value) {

@@ -13,33 +13,59 @@ class ForgotPasswordModel : ViewModel() {
     val emailError = mutableStateOf(false)
     val resetProgress = mutableStateOf(false)
 
-    fun resetPasswordButtonClick(context: Context) {
+
+    fun emailErrorReset() {
+        emailError.value = false
+    }
+
+    private fun toggleResetOFF() {
+        resetProgress.value = false
+    }
+
+    private fun toggleResetON() {
         resetProgress.value = true
-        emailError.value = !isEmailValid(email.value)
-        if (!emailError.value) {
-            FirebaseManager.resetPassword(
-                email.value
-            ) { isSuccess, errorMessage ->
-                resetProgress.value = false
-                if (isSuccess) {
-                    // Password reset email sent successfully
-                    Toast.makeText(
-                        context,
-                        "Password reset email sent",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    email.value = ""
-                } else {
-                    // Failed to send password reset email
-                    Toast.makeText(
-                        context,
-                        errorMessage,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
+    }
+
+    fun isResetButtonEnabled(): Boolean {
+        return !resetProgress.value && email.value.isNotEmpty()
+    }
+
+    private fun clearEmailField() {
+        email.value = ""
+    }
+
+    fun resetPasswordButtonClick(
+        context: Context
+    ) {
+        toggleResetON()
+        if (isEmailValid(email.value)) {
+            validateResetPass(context)
         } else {
-            resetProgress.value = false
+            toggleResetOFF()
+        }
+    }
+
+    private fun validateResetPass(
+        context: Context
+    ) {
+        FirebaseManager.resetPassword(
+            email.value
+        ) { isSuccess, errorMessage ->
+            toggleResetOFF()
+            if (isSuccess) {
+                Toast.makeText(
+                    context,
+                    "Password reset email sent",
+                    Toast.LENGTH_SHORT
+                ).show()
+                clearEmailField()
+            } else {
+                Toast.makeText(
+                    context,
+                    errorMessage,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
