@@ -111,12 +111,12 @@ private fun SignUpScreenUI() {
 @Composable
 private fun TopBarUI() {
     Text(
-        text = "Signup",
+        text = "Your Inventory, Reinvented",
         style = MaterialTheme.typography.displayMedium,
     )
     Spacer(modifier = Modifier.height(10.dp))
     Text(
-        text = "Best way to manage your inventory",
+        text = "Smarter workflow starts here.",
         style = MaterialTheme.typography.titleLarge,
     )
 }

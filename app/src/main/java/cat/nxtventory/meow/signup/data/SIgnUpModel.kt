@@ -4,15 +4,17 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import cat.nxtventory.meow.firebase.FirebaseManager
 import cat.nxtventory.meow.firebase.isEmailValid
-import cat.nxtventory.meow.firebase.isPasswordValid
+import cat.nxtventory.meow.firebase.isPasswordStrong
 import cat.nxtventory.meow.firebase.isUsernameEmailPassValid
 import cat.nxtventory.meow.signin.ui.SignInScreen
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 
 class SignUpModel : ViewModel() {
@@ -28,10 +30,9 @@ class SignUpModel : ViewModel() {
     val passwordError = mutableStateOf(false)
     val signUpProgress = mutableStateOf(false)
 
-
     private fun reportFieldsError() {
         emailError.value = !isEmailValid(email.value)
-        passwordError.value = !isPasswordValid(password.value)
+        passwordError.value = !isPasswordStrong(password.value)
     }
 
     private fun toggleSignUpON() {
@@ -81,7 +82,10 @@ class SignUpModel : ViewModel() {
     ) {
 
         if (isUsernameEmailPassValid(username.value, email.value, password.value)) {
-            performSignUp(context, navigator)
+            viewModelScope.launch {
+                performSignUp(context, navigator)
+            }
+
         } else {
             toggleSignUpOFF()
         }

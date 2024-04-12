@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import cat.nxtventory.meow.firebase.FirebaseManager
 import cat.nxtventory.meow.firebase.UserDataManager
@@ -13,6 +14,7 @@ import cat.nxtventory.meow.firebase.isUsernamePassValid
 import cat.nxtventory.meow.nxtventory.ui.NxtVentory
 import cat.nxtventory.meow.signup.ui.SignUpScreen
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.launch
 
 class SignInModel : ViewModel() {
 
@@ -22,6 +24,7 @@ class SignInModel : ViewModel() {
     val usernameError = mutableStateOf(false)
     val passwordError = mutableStateOf(false)
     val signInProgress = mutableStateOf(false)
+    val showResendDialog = mutableStateOf(false)
 
 
     fun isSignInButtonEnabled(): Boolean {
@@ -62,7 +65,10 @@ class SignInModel : ViewModel() {
         navigator: Navigator?
     ) {
         if (isUsernamePassValid(username.value, password.value)) {
-            performSignIn(context, navigator)
+            viewModelScope.launch {
+                performSignIn(context, navigator)
+            }
+
         } else {
             toggleSignInOFF()
         }
@@ -122,7 +128,6 @@ class SignInModel : ViewModel() {
     private fun displayEmailNotVerifiedMessage(
         context: Context
     ) {
-
         Toast.makeText(
             context,
             "Email is not verified. Please verify your email.",

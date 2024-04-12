@@ -17,11 +17,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -57,6 +59,7 @@ private fun SignInScreenUI() {
 
     val navigator = LocalNavigator.current
     val context = LocalContext.current
+
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -107,6 +110,9 @@ private fun SignInScreenUI() {
                 SignUpTextButton(viewModel, navigator)
                 Spacer(modifier = Modifier.height(50.dp))
             }
+            if (viewModel.showResendDialog.value) {
+                ResendAlertDialog()
+            }
         }
     }
 
@@ -129,12 +135,12 @@ fun ForgotPassTextButton(
 @Composable
 private fun TopBarUI() {
     Text(
-        text = "Login",
+        text = "Your Inventory Insights Await",
         style = MaterialTheme.typography.displayMedium,
     )
     Spacer(modifier = Modifier.height(10.dp))
     Text(
-        text = "Best way to manage your inventory",
+        text = "Access your smart inventory.",
         style = MaterialTheme.typography.titleLarge,
     )
 }
@@ -255,6 +261,37 @@ private fun SignUpTextButton(
         )
     }
 }
+
+@Composable
+fun ResendAlertDialog() {
+    AlertDialog(
+        onDismissRequest = { },
+        title = {
+            Text(text = "Email Not Verified")
+        },
+        text = {
+            Text(
+                text = "Your email is not verified. Would you like to send a verification email?",
+                style = MaterialTheme.typography.labelLarge
+            )
+        },
+        confirmButton = {
+            Button(
+                onClick = { }
+            ) {
+                Text(text = "Send Email")
+            }
+        },
+        dismissButton = {
+            OutlinedButton(
+                onClick = { }
+            ) {
+                Text(text = "Dismiss")
+            }
+        }
+    )
+}
+
 
 @Preview(showSystemUi = true)
 @Composable

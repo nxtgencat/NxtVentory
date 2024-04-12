@@ -77,12 +77,12 @@ private fun WelcomeScreenUI() {
 @Composable
 private fun TopBarUI() {
     Text(
-        text = "Get started!",
+        text = "NxtVentory",
         style = MaterialTheme.typography.displayMedium,
     )
     Spacer(modifier = Modifier.height(10.dp))
     Text(
-        text = "Best way to manage your inventory",
+        text = "Smarter inventory, faster workflow.",
         style = MaterialTheme.typography.titleLarge,
     )
 }
