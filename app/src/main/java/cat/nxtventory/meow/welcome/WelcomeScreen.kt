@@ -90,7 +90,7 @@ private fun TopBarUI() {
 }
 
 @Composable
-fun ContentUI(){
+fun ContentUI() {
     Icon(
         painter = painterResource(id = R.drawable.nxtventory),
         contentDescription = "welcome_logo"

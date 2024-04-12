@@ -1,11 +1,12 @@
 package cat.nxtventory.meow.nxtventory.ui
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -141,6 +142,15 @@ fun NxtVentoryTopBar(
                     contentDescription = null
                 )
             }
+        },
+        actions = {
+            IconButton(
+                onClick = { }
+            ) {
+                Icon(imageVector = Icons.Filled.Notifications, contentDescription = "notifications")
+            }
+            Spacer(modifier = Modifier.width(25.dp))
+
         }
     )
 }

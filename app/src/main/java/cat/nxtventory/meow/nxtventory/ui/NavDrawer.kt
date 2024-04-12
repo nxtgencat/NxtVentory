@@ -92,10 +92,10 @@ fun NavDrawHeader() {
         userDetails = UserDataManager.getUserDetails(context)
     }
 
-    Column (
+    Column(
         modifier = Modifier
             .padding(start = 20.dp, top = 20.dp, bottom = 10.dp, end = 20.dp)
-    ){
+    ) {
         Text(
             text = "NxtVentory",
             style = MaterialTheme.typography.headlineMedium
@@ -111,12 +111,12 @@ fun NavDrawHeader() {
             Column(modifier = Modifier.fillMaxSize()) {
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
-        } else{
-            Column (
+        } else {
+            Column(
                 modifier = Modifier.fillMaxHeight(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
-            ){
+            ) {
                 Image(
                     modifier = Modifier
                         .size(75.dp)
@@ -127,7 +127,7 @@ fun NavDrawHeader() {
                 Spacer(modifier = Modifier.height(10.dp))
                 userDetails?.let { user ->
                     Text(
-                        text =  user["username"].toString().uppercase(),
+                        text = user["username"].toString().uppercase(),
                         style = MaterialTheme.typography.labelMedium
                     )
                 }
@@ -152,10 +152,10 @@ fun NavDrawHeader() {
 }
 
 @Composable
-fun UserDetailText(userDetails:  Map<String, Any>?,detail: String){
+fun UserDetailText(userDetails: Map<String, Any>?, detail: String) {
     userDetails?.let { user ->
         Text(
-            text =  "${detail.uppercase()} : ${user[detail].toString().uppercase()}",
+            text = "${detail.uppercase()} : ${user[detail].toString().uppercase()}",
             style = MaterialTheme.typography.labelMedium
         )
     }

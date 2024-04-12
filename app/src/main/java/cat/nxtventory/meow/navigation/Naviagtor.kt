@@ -5,13 +5,13 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import cat.nxtventory.meow.account.ui.SignOutScreen
 import cat.nxtventory.meow.billing.ui.BillingScreen
 import cat.nxtventory.meow.home.ui.HomeScreen
 import cat.nxtventory.meow.inventory.ui.InventoryScreen
 import cat.nxtventory.meow.loyalty.ui.LoyaltyScreen
 import cat.nxtventory.meow.refunds.ui.RefundScreen
 import cat.nxtventory.meow.settings.ui.SettingsScreen
-import cat.nxtventory.meow.account.ui.SignOutScreen
 import cat.nxtventory.meow.vendor.VendorScreen
 
 enum class ScaffScreen(val route: String) {
@@ -23,7 +23,9 @@ enum class ScaffScreen(val route: String) {
     Vendor("vendor"),
     Settings("settings"),
     Account("account"),
+    Welcome("welcome")
 }
+
 @Composable
 fun Navigate(
     navController: NavHostController,

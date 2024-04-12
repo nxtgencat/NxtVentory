@@ -91,7 +91,6 @@ object FirebaseManager {
     }
 
 
-
     // Sign in with email and password
     fun signIn(email: String, password: String, onComplete: (FirebaseUser?, String?) -> Unit) {
         FirebaseAuth.getInstance()
@@ -142,7 +141,10 @@ object FirebaseManager {
                         onComplete(true, "Username is available")
                     }
                 } else {
-                    onComplete(false, "Error checking username availability: ${task.exception?.message}")
+                    onComplete(
+                        false,
+                        "Error checking username availability: ${task.exception?.message}"
+                    )
                 }
             }
     }

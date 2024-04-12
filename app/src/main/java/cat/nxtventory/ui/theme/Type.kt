@@ -37,7 +37,7 @@ val myTypography = Typography(
     headlineLarge = TextStyle(
         fontFamily = Montserrat,
         fontWeight = FontWeight.Bold,
-        fontSize = 20.sp // Adjust the font size as needed
+        fontSize = 22.sp // Adjust the font size as needed
     ),
     headlineMedium = TextStyle(
         fontFamily = Montserrat,
