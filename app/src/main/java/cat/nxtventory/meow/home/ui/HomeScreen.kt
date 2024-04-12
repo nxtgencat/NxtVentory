@@ -84,6 +84,7 @@ fun HomeScreenSaleCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background,
         ),
+        shape = RoundedCornerShape(25.dp)
     ) {
         Column(
             modifier = Modifier
@@ -120,6 +121,8 @@ fun EarningsCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background,
         ),
+        shape = RoundedCornerShape(25.dp)
+
     ) {
         Column(
             modifier = Modifier
@@ -149,6 +152,8 @@ fun CustomerCard() {
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background,
         ),
+        shape = RoundedCornerShape(25.dp)
+
     ) {
         Row(
             modifier = Modifier
@@ -192,6 +197,8 @@ fun GraphCard() {
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background,
         ),
+        shape = RoundedCornerShape(25.dp)
+
     ) {
 
     }
@@ -208,6 +215,8 @@ fun InventoryItemCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background,
         ),
+        shape = RoundedCornerShape(25.dp)
+
     ) {
         Column(
             modifier = Modifier
