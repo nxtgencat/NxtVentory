@@ -42,7 +42,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cat.nxtventory.meow.firebase.FirebaseManager
 import cat.nxtventory.meow.firebase.isUsernameValid
 import cat.nxtventory.meow.signup.data.SignUpModel
-import cat.nxtventory.ui.theme.myTypography
+import cat.nxtventory.ui.theme.NxtVentoryTheme
 
 class SignUpScreen : Screen {
     @Composable
@@ -57,56 +57,52 @@ private fun SignUpScreenUI(navigator: Navigator?) {
     val context = LocalContext.current
     val viewModel: SignUpModel = viewModel()
 
-    MaterialTheme(
-        typography = myTypography
+    Column(
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 25.dp)
+                .weight(3f),
+            verticalArrangement = Arrangement.Center
         ) {
+            TopBarUI()
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
+                .weight(7f)
+                .background(color = MaterialTheme.colorScheme.surfaceContainer),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(50.dp))
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 25.dp)
-                    .weight(3f),
-                verticalArrangement = Arrangement.Center
+                    .weight(6f)
             ) {
-                TopBarUI()
+                UsernameTextField(viewModel)
+                EmailTextField(viewModel)
+                PasswordTextField(viewModel)
             }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-                    .weight(7f)
-                    .background(color = MaterialTheme.colorScheme.surfaceContainer),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .weight(4f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Bottom
             ) {
+                SignUpButton(viewModel, context, navigator)
+                Spacer(modifier = Modifier.height(30.dp))
+                Text(
+                    text = "Already have an acoount?",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                LoginTextButton(viewModel, navigator)
                 Spacer(modifier = Modifier.height(50.dp))
-                Column(
-                    modifier = Modifier
-                        .weight(6f)
-                ) {
-                    UsernameTextField(viewModel)
-                    EmailTextField(viewModel)
-                    PasswordTextField(viewModel)
-                }
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(4f),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Bottom
-                ) {
-                    SignUpButton(viewModel, context, navigator)
-                    Spacer(modifier = Modifier.height(30.dp))
-                    Text(
-                        text = "Already have an acoount?",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    LoginTextButton(viewModel, navigator)
-                    Spacer(modifier = Modifier.height(50.dp))
-                }
             }
         }
     }
@@ -291,6 +287,8 @@ fun LoginTextButton(
 @Preview(showSystemUi = true)
 @Composable
 fun SignUpScreenPreview() {
-    val navigator = LocalNavigator.current
-    SignUpScreenUI(navigator)
+    NxtVentoryTheme {
+        val navigator = LocalNavigator.current
+        SignUpScreenUI(navigator)
+    }
 }

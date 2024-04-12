@@ -74,7 +74,7 @@ fun NxtVentoryTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = myTypography,
         content = content
     )
 }

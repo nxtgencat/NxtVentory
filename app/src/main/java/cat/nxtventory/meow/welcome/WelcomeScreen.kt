@@ -25,7 +25,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cat.nxtventory.R
 import cat.nxtventory.meow.signin.ui.SignInScreen
 import cat.nxtventory.meow.signup.ui.SignUpScreen
-import cat.nxtventory.ui.theme.myTypography
+import cat.nxtventory.ui.theme.NxtVentoryTheme
 
 class WelcomeScreen : Screen {
     @Composable
@@ -39,42 +39,39 @@ class WelcomeScreen : Screen {
 @Composable
 private fun WelcomeScreenUI(navigator: Navigator?) {
 
-    MaterialTheme(
-        typography = myTypography
+    Column(
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 25.dp)
+                .weight(3f),
+            verticalArrangement = Arrangement.Center
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 25.dp)
-                    .weight(3f),
-                verticalArrangement = Arrangement.Center
-            ) {
-                TopBarUI()
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(4f),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                ContentUI()
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(3f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom
-            ) {
-                BottomBarUI(navigator)
-            }
+            TopBarUI()
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(4f),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ContentUI()
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(3f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            BottomBarUI(navigator)
         }
     }
 }
+
 
 @Composable
 private fun TopBarUI() {
@@ -133,8 +130,8 @@ private fun BottomBarUI(navigator: Navigator?) {
 @Preview(showSystemUi = true)
 @Composable
 fun WelcomeScreenPreview() {
-
-    val navigator = LocalNavigator.current
-    WelcomeScreenUI(navigator)
-
+    NxtVentoryTheme {
+        val navigator = LocalNavigator.current
+        WelcomeScreenUI(navigator)
+    }
 }

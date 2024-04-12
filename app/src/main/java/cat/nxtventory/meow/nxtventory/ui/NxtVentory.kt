@@ -40,7 +40,7 @@ import cat.nxtventory.meow.billing.ui.BillnigScreenBottomBar
 import cat.nxtventory.meow.navigation.Navigate
 import cat.nxtventory.meow.navigation.ScaffScreen
 import cat.nxtventory.meow.nxtventory.data.navDraweritems
-import cat.nxtventory.ui.theme.myTypography
+import cat.nxtventory.ui.theme.NxtVentoryTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -70,47 +70,43 @@ fun NxtVentoryUI(navigator: Navigator?) {
             navDraweritems[0].title
         }
 
-    MaterialTheme(
-        typography = myTypography
-    ) {
-        ModalNavigationDrawer(
-            drawerState = drawerState,
-            gesturesEnabled = drawerState.isOpen,
-            drawerContent = {
-                NavigationDrawer(
-                    currentRoute,
-                    navController,
-                    scope,
-                    drawerState
-                )
-            }
-        ) {
-            Scaffold(
-                topBar = {
-                    NxtVentoryTopBar(
-                        topBarTitle,
-                        scope = scope,
-                        drawerState = drawerState
-                    )
-                },
-                content = { innerPadding ->
-                    Navigate(navController = navController, innerPadding = innerPadding)
-                },
-                floatingActionButton = {
-                    when (currentRoute) {
-                        ScaffScreen.Billing.route, ScaffScreen.Settings.route, ScaffScreen.Account.route -> {}
-                        else -> {
-                            NxtVentoryFAB(navController)
-                        }
-                    }
-                },
-                bottomBar = {
-                    when (currentRoute) {
-                        ScaffScreen.Billing.route -> BillnigScreenBottomBar()
-                    }
-                }
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        gesturesEnabled = drawerState.isOpen,
+        drawerContent = {
+            NavigationDrawer(
+                currentRoute,
+                navController,
+                scope,
+                drawerState
             )
         }
+    ) {
+        Scaffold(
+            topBar = {
+                NxtVentoryTopBar(
+                    topBarTitle,
+                    scope = scope,
+                    drawerState = drawerState
+                )
+            },
+            content = { innerPadding ->
+                Navigate(navController = navController, innerPadding = innerPadding)
+            },
+            floatingActionButton = {
+                when (currentRoute) {
+                    ScaffScreen.Billing.route, ScaffScreen.Settings.route, ScaffScreen.Account.route -> {}
+                    else -> {
+                        NxtVentoryFAB(navController)
+                    }
+                }
+            },
+            bottomBar = {
+                when (currentRoute) {
+                    ScaffScreen.Billing.route -> BillnigScreenBottomBar()
+                }
+            }
+        )
     }
 }
 
@@ -183,6 +179,8 @@ fun NxtVentoryFAB(navController: NavController) {
 @Preview(showSystemUi = true)
 @Composable
 fun NxtVentoryPreview() {
-    val navigator = LocalNavigator.current
-    NxtVentoryUI(navigator)
+    NxtVentoryTheme {
+        val navigator = LocalNavigator.current
+        NxtVentoryUI(navigator)
+    }
 }

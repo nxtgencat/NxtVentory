@@ -161,6 +161,9 @@ fun CustomerCard() {
                 .fillMaxWidth()
         ) {
             Spacer(modifier = Modifier.width(15.dp))
+            Box() {
+
+            }
             Icon(
                 imageVector = Icons.Filled.People,
                 contentDescription = "people"

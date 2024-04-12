@@ -42,7 +42,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cat.nxtventory.meow.forgotpassword.ui.ForgotPasswordScreen
 import cat.nxtventory.meow.signin.data.SignInModel
-import cat.nxtventory.ui.theme.myTypography
+import cat.nxtventory.ui.theme.NxtVentoryTheme
 
 class SignInScreen : Screen {
     @Composable
@@ -57,75 +57,71 @@ private fun SignInScreenUI(navigator: Navigator?) {
     val context = LocalContext.current
     val viewModel: SignInModel = viewModel()
 
-
-    MaterialTheme(
-        typography = myTypography // Applying custom typography here
+    Surface(
+        color = MaterialTheme.colorScheme.surface
     ) {
-        Surface(
-            color = MaterialTheme.colorScheme.surface
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 25.dp)
+                    .weight(3f),
+                verticalArrangement = Arrangement.Center
             ) {
+                TopBarUI()
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
+                    .weight(7f)
+                    .background(color = MaterialTheme.colorScheme.surfaceContainer),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(50.dp))
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 25.dp)
-                        .weight(3f),
-                    verticalArrangement = Arrangement.Center
+                        .weight(6f)
                 ) {
-                    TopBarUI()
+                    EmailTextField(viewModel)
+                    PasswordTextField(viewModel)
+                    Box(
+                        modifier = Modifier.align(Alignment.End)
+                    ) {
+                        TextButton(
+                            onClick = { navigator?.push(ForgotPasswordScreen()) }
+                        ) {
+                            Text(
+                                text = "Forgot password?",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                    }
                 }
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-                        .weight(7f)
-                        .background(color = MaterialTheme.colorScheme.surfaceContainer),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .weight(4f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom
                 ) {
+                    LoginButton(viewModel, context, navigator)
+                    Spacer(modifier = Modifier.height(30.dp))
+                    Text(
+                        text = "Don't have an account yet?",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    SignUpTextButton(viewModel, navigator)
                     Spacer(modifier = Modifier.height(50.dp))
-                    Column(
-                        modifier = Modifier
-                            .weight(6f)
-                    ) {
-                        EmailTextField(viewModel)
-                        PasswordTextField(viewModel)
-                        Box(
-                            modifier = Modifier.align(Alignment.End)
-                        ) {
-                            TextButton(
-                                onClick = { navigator?.push(ForgotPasswordScreen()) }
-                            ) {
-                                Text(
-                                    text = "Forgot password?",
-                                    style = MaterialTheme.typography.titleMedium
-                                )
-                            }
-                        }
-                    }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(4f),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Bottom
-                    ) {
-                        LoginButton(viewModel, context, navigator)
-                        Spacer(modifier = Modifier.height(30.dp))
-                        Text(
-                            text = "Don't have an account yet?",
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-                        SignUpTextButton(viewModel, navigator)
-                        Spacer(modifier = Modifier.height(50.dp))
-                    }
                 }
             }
         }
     }
+
 }
 
 
@@ -252,6 +248,8 @@ private fun SignUpTextButton(viewModel: SignInModel, navigator: Navigator?) {
 @Preview(showSystemUi = true)
 @Composable
 fun SignInPreview() {
-    val navigator = LocalNavigator.current
-    SignInScreenUI(navigator)
+    NxtVentoryTheme {
+        val navigator = LocalNavigator.current
+        SignInScreenUI(navigator)
+    }
 }
