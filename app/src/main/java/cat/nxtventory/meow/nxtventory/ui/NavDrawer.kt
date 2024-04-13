@@ -2,6 +2,7 @@ package cat.nxtventory.meow.nxtventory.ui
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -177,7 +178,7 @@ fun UserDetailText(userDetails: Map<String, Any>?, detail: String) {
     userDetails?.let { user ->
         Text(
             text = "${detail.replaceFirstChar { it.uppercaseChar() }} : ${user[detail].toString().replaceFirstChar { it.uppercaseChar() }}",
-            style = MaterialTheme.typography.labelLarge
+            style = MaterialTheme.typography.labelMedium
         )
     }
 }
