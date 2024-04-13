@@ -44,13 +44,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    MyApp(isLoggedIn
-                    Column {
-                        repeat(10) {
-
-                            Text(text = "Hello")
-                        }
-                    }
                     MyApp(isLoggedIn)
                 }
             }

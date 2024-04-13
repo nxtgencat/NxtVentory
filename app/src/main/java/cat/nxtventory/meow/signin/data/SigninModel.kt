@@ -11,6 +11,7 @@ import cat.nxtventory.meow.firebase.FirebaseManager
 import cat.nxtventory.meow.firebase.UserDataManager
 import cat.nxtventory.meow.firebase.isPasswordValid
 import cat.nxtventory.meow.firebase.isUsernamePassValid
+import cat.nxtventory.meow.firebase.isUsernameValid
 import cat.nxtventory.meow.nxtventory.ui.NxtVentory
 import cat.nxtventory.meow.signup.ui.SignUpScreen
 import com.google.firebase.auth.FirebaseUser
@@ -39,7 +40,8 @@ class SignInModel : ViewModel() {
         isPasswordVisible.value = !isPasswordVisible.value
     }
 
-    private fun reportPassError() {
+    private fun reportUserPassError() {
+        usernameError.value = !isUsernameValid(username.value)
         passwordError.value = !isPasswordValid(password.value)
     }
 
@@ -56,7 +58,7 @@ class SignInModel : ViewModel() {
         navigator: Navigator?
     ) {
         toggleSignInON()
-        reportPassError()
+        reportUserPassError()
         validateSignUp(context, navigator)
     }
 
