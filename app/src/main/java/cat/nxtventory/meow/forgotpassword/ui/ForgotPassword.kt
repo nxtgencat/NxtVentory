@@ -1,6 +1,7 @@
 package cat.nxtventory.meow.forgotpassword.ui
 
 import android.content.Context
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,19 +36,20 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cat.nxtventory.meow.forgotpassword.data.ForgotPasswordModel
+import cat.nxtventory.ui.theme.NxtVentoryTheme
 import cat.nxtventory.ui.theme.myTypography
 
 class ForgotPasswordScreen : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.current
-        ForgotPasswordScreenUI(navigator)
+        ForgotPasswordScreenUI()
     }
 }
 
 @Composable
-fun ForgotPasswordScreenUI(navigator: Navigator?) {
+fun ForgotPasswordScreenUI() {
 
+    val navigator = LocalNavigator.current
     val context = LocalContext.current
     val viewModel: ForgotPasswordModel = viewModel()
 
@@ -196,9 +198,18 @@ private fun GoBackTextButton(navigator: Navigator?) {
     }
 }
 
+
+@Preview(showSystemUi = true, uiMode = UI_MODE_NIGHT_YES)
 @Preview(showSystemUi = true)
 @Composable
-fun ForgotPasswordScreenPreview() {
-    val navigator = LocalNavigator.current
-    ForgotPasswordScreenUI(navigator)
+private fun UniveralPreview() {
+    NxtVentoryTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            ForgotPasswordScreenUI()
+
+        }
+    }
 }

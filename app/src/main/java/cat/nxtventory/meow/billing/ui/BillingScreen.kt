@@ -1,12 +1,15 @@
 package cat.nxtventory.meow.billing.ui
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,13 +25,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.QrCode
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,7 +51,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cat.nxtventory.meow.billing.data.BillingModel
 import cat.nxtventory.meow.billing.data.InventoryItem
 import cat.nxtventory.meow.billing.data.inventoryItems
-import cat.nxtventory.ui.theme.myTypography
+import cat.nxtventory.ui.theme.NxtVentoryTheme
 
 
 @Composable
@@ -80,17 +87,13 @@ fun BillingScreen(innerPadding: PaddingValues) {
                 }
             )
         }
-        Column {
-            ItemSearch()
-        }
-
+        NxtSearchBar()
         Spacer(modifier = Modifier.height(20.dp))
         Column {
             InventoryTitles()
             Spacer(modifier = Modifier.height(10.dp))
             InventoryList(inventoryItems = inventoryItems)
         }
-
     }
 }
 
@@ -216,6 +219,32 @@ fun BillButton(
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NxtSearchBar() {
+    var text by rememberSaveable { mutableStateOf("") }
+    var active by rememberSaveable { mutableStateOf(false) }
+
+    Box(Modifier.fillMaxWidth()) {
+        SearchBar(
+            modifier = Modifier
+                .align(Alignment.Center),
+            query = text,
+            onQueryChange = { text = it },
+            onSearch = { active = false },
+            active = active,
+            onActiveChange = { },
+            placeholder = { Text("Item search") },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+            trailingIcon = { Icon(Icons.Default.QrCode, contentDescription = null) },
+            windowInsets = WindowInsets(0, 0, 0, 0)
+        ) {
+
+        }
+    }
+}
+
 @Composable
 fun ItemSearch() {
     var itemSearch by rememberSaveable { mutableStateOf("") }
@@ -249,6 +278,7 @@ fun ItemSearch() {
                 )
             }
         )
+
         Spacer(modifier = Modifier.weight(0.1f))
     }
 }
@@ -313,22 +343,28 @@ fun ItemInfo(text: String, width: Float) {
     )
 }
 
+
+@Preview(showSystemUi = true, uiMode = UI_MODE_NIGHT_YES)
 @Preview(showSystemUi = true)
 @Composable
-fun BillingScreenPreview() {
-    MaterialTheme(
-        typography = myTypography // Applying custom typography here
-    ) {
-        BillingScreen(innerPadding = PaddingValues())
+private fun UniveralPreview() {
+    NxtVentoryTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            BillingScreen(innerPadding = PaddingValues())
+
+        }
     }
 }
 
+
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Preview(showBackground = true)
 @Composable
-fun BillnigScreenBottomBarPreview() {
-    MaterialTheme(
-        typography = myTypography // Applying custom typography here
-    ) {
+private fun UniveralPreview1() {
+    NxtVentoryTheme {
         BillnigScreenBottomBar()
     }
 }

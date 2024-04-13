@@ -1,6 +1,8 @@
 package cat.nxtventory.meow.nxtventory.ui
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -18,6 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -35,7 +38,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import cat.nxtventory.meow.billing.ui.BillnigScreenBottomBar
 import cat.nxtventory.meow.navigation.Navigate
 import cat.nxtventory.meow.navigation.ScaffScreen
@@ -47,14 +49,14 @@ import kotlinx.coroutines.launch
 class NxtVentory : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.current
-        NxtVentoryUI(navigator)
+        NxtVentoryUI()
     }
 }
 
 @Composable
-fun NxtVentoryUI(navigator: Navigator?) {
+fun NxtVentoryUI() {
 
+    val navigator = LocalNavigator.current
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
@@ -176,11 +178,17 @@ fun NxtVentoryFAB(navController: NavController) {
 }
 
 
+@Preview(showSystemUi = true, uiMode = UI_MODE_NIGHT_YES)
 @Preview(showSystemUi = true)
 @Composable
-fun NxtVentoryPreview() {
+private fun UniveralPreview() {
     NxtVentoryTheme {
-        val navigator = LocalNavigator.current
-        NxtVentoryUI(navigator)
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            NxtVentoryUI()
+
+        }
     }
 }

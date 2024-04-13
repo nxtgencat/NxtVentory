@@ -82,7 +82,7 @@ val myTypography = Typography(
     labelLarge = TextStyle(
         fontFamily = Montserrat,
         fontWeight = FontWeight.Medium,
-        fontSize = 14.sp // Adjust the font size as needed
+        fontSize = 16.sp // Adjust the font size as needed
     ),
     labelMedium = TextStyle(
         fontFamily = Montserrat,

@@ -1,5 +1,6 @@
 package cat.nxtventory.meow.nxtventory.data
 
+import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Inventory
@@ -17,8 +18,15 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Receipt
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Wallet
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import cat.nxtventory.meow.firebase.UserDataManager
 import cat.nxtventory.meow.navigation.ScaffScreen
+import kotlinx.coroutines.launch
 
 data class NavigationItem(
     val title: String,
@@ -77,3 +85,22 @@ val navDraweritems = listOf(
         unSelectedIcon = Icons.Outlined.Person,
     )
 )
+
+class NavDrawerModel : ViewModel() {
+
+    var userDetails by mutableStateOf<Map<String, Any>?>(null)
+        private set  // Make the state private for better control
+
+
+    fun loadUserDetails(context: Context) {
+        viewModelScope.launch {  // Use viewModelScope for coroutines
+            val result = try {
+                UserDataManager.getUserDetails(context)
+            } catch (exception: Exception) {
+                // Handle errors appropriately, e.g., log, show UI message
+                null
+            }
+            userDetails = result
+        }
+    }
+}

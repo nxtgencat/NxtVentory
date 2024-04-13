@@ -1,5 +1,6 @@
 package cat.nxtventory.meow.account.ui
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cat.nxtventory.meow.firebase.UserDataManager
+import cat.nxtventory.ui.theme.NxtVentoryTheme
 import cat.nxtventory.ui.theme.myTypography
 
 
@@ -77,8 +80,18 @@ fun SignOutScreen(innerPadding: PaddingValues) {
     }
 }
 
+
+@Preview(showSystemUi = true, uiMode = UI_MODE_NIGHT_YES)
 @Preview(showSystemUi = true)
 @Composable
-fun SignOutScreenPreview() {
-    SignOutScreen(innerPadding = PaddingValues())
+private fun UniveralPreview() {
+    NxtVentoryTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            SignOutScreen(innerPadding = PaddingValues())
+
+        }
+    }
 }

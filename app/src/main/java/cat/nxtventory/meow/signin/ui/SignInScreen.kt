@@ -1,6 +1,7 @@
 package cat.nxtventory.meow.signin.ui
 
 import android.content.Context
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,6 +26,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -292,11 +294,16 @@ fun ResendAlertDialog() {
     )
 }
 
-
+@Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview(showSystemUi = true)
 @Composable
-fun SignInPreview() {
+private fun UniveralPreview() {
     NxtVentoryTheme {
-        SignInScreenUI()
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            SignInScreenUI()
+        }
     }
 }
