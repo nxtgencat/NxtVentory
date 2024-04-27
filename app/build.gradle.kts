@@ -74,16 +74,19 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.material.icons.extended.android) // Material Icons Extended
-    implementation(libs.voyager.navigator) // Voyager Navigation
-    implementation(libs.voyager.tab.navigator) // TabNavigator
-    implementation(libs.voyager.transitions) // Transitions
 
-    // Import the Firebase BoM
+
+    val voyagerVersion = "1.0.0"
+    implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion") // Navigator
+    implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion") // TabNavigator
+    implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion") // Transitions
+
+    // Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
-
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
 
+    // Supabase
     implementation(platform("io.github.jan-tennert.supabase:bom:2.2.3"))
     implementation("io.github.jan-tennert.supabase:postgrest-kt")
     implementation("io.ktor:ktor-client-android:2.3.10")
