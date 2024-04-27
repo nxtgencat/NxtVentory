@@ -63,9 +63,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.navigation.runtime.ktx)
-    implementation(libs.androidx.navigation.compose) // Naviagtion Compose
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -73,16 +70,19 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+
+
+    implementation(libs.androidx.navigation.compose) // Navigation Compose
     implementation(libs.androidx.material.icons.extended.android) // Material Icons Extended
 
 
-    val voyagerVersion = "1.0.0"
-    implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion") // Navigator
-    implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion") // TabNavigator
-    implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion") // Transitions
+    implementation(libs.voyager.navigator) // Navigator
+    implementation(libs.voyager.tab.navigator) // TabNavigator
+    implementation(libs.voyager.transitions) // Transitions
 
     // Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
 
@@ -90,6 +90,5 @@ dependencies {
     implementation(platform("io.github.jan-tennert.supabase:bom:2.2.3"))
     implementation("io.github.jan-tennert.supabase:postgrest-kt")
     implementation("io.ktor:ktor-client-android:2.3.10")
-
 
 }

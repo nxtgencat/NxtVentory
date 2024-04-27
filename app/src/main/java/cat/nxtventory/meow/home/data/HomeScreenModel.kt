@@ -23,9 +23,10 @@ fun GetFormattedDate(): String {
 
 object HomeScreenSampleData {
     val user: String = "Sushanth"
-    val todaySaleAmount: Double = 5249.00
-    val todayBills: Int = 154
-    val todayEarnigs: Double = 8950.00
-    val instockItems: Int = 2985
+    val SaleAmount: Double = 25249.22
+    val numberOfBills: Int = 154
+    val earnings: Double = 3950.86
+    val availableInventoryItems: Int = 2985
+    val customers: Int = 196
 }
 

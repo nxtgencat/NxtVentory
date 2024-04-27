@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.twotone.Notifications
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -29,7 +30,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,6 +42,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cat.nxtventory.R
 import cat.nxtventory.meow.billing.ui.BillnigScreenBottomBar
 import cat.nxtventory.meow.navigation.Navigate
 import cat.nxtventory.meow.navigation.ScaffScreen
@@ -130,25 +135,28 @@ fun NxtVentoryTopBar(
         colors = TopAppBarDefaults.topAppBarColors(containerColor = BottomAppBarDefaults.containerColor),
         navigationIcon = {
             IconButton(
-                modifier = Modifier.padding(start = 10.dp),
+                modifier = Modifier.padding(start = 20.dp, end = 10.dp),
                 onClick = {
                     scope.launch { drawerState.open() }
                 }
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Menu,
+                    imageVector = ImageVector.vectorResource(id = R.drawable.menu),
                     contentDescription = null
                 )
+
             }
         },
         actions = {
             IconButton(
+                modifier = Modifier.padding(end = 20.dp),
                 onClick = { }
             ) {
-                Icon(imageVector = Icons.Filled.Notifications, contentDescription = "notifications")
+                Icon(
+                    imageVector = Icons.TwoTone.Notifications,
+                    contentDescription = "notifications"
+                )
             }
-            Spacer(modifier = Modifier.width(25.dp))
-
         }
     )
 }
@@ -172,7 +180,7 @@ fun NxtVentoryFAB(navController: NavController) {
     ) {
         Icon(
             imageVector = Icons.Filled.Add,
-            contentDescription = "Localized description"
+            contentDescription = "fab"
         )
     }
 }
@@ -188,7 +196,6 @@ private fun UniveralPreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             NxtVentoryUI()
-
         }
     }
 }

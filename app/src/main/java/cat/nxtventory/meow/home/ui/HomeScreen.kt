@@ -2,6 +2,8 @@ package cat.nxtventory.meow.home.ui
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,8 +15,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Inventory
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.Card
@@ -31,10 +37,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cat.nxtventory.meow.home.data.GetTodaysDayAndDateLegacy
-import cat.nxtventory.meow.home.data.HomeScreenSampleData.instockItems
-import cat.nxtventory.meow.home.data.HomeScreenSampleData.todayBills
-import cat.nxtventory.meow.home.data.HomeScreenSampleData.todayEarnigs
-import cat.nxtventory.meow.home.data.HomeScreenSampleData.todaySaleAmount
+import cat.nxtventory.meow.home.data.HomeScreenSampleData
+import cat.nxtventory.meow.home.data.HomeScreenSampleData.SaleAmount
+import cat.nxtventory.meow.home.data.HomeScreenSampleData.availableInventoryItems
+import cat.nxtventory.meow.home.data.HomeScreenSampleData.customers
+import cat.nxtventory.meow.home.data.HomeScreenSampleData.earnings
+import cat.nxtventory.meow.home.data.HomeScreenSampleData.numberOfBills
 import cat.nxtventory.meow.home.data.HomeScreenSampleData.user
 import cat.nxtventory.ui.theme.NxtVentoryTheme
 
@@ -42,75 +50,90 @@ import cat.nxtventory.ui.theme.NxtVentoryTheme
 fun HomeScreen(innerPadding: PaddingValues) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
             .padding(innerPadding)
+            .fillMaxSize()
     ) {
-        Column(
+        Row(
             modifier = Modifier
-                .padding(25.dp)
-                .fillMaxWidth()
+                .padding(start = 40.dp, top = 20.dp, end = 40.dp)
         ) {
             Text(
+                modifier = Modifier.weight(0.7f),
                 text = "Hello, $user !",
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
             )
+            Box(
+                modifier = Modifier
+                    .weight(0.5f)
+                    .fillMaxWidth(),
+               contentAlignment = Alignment.CenterEnd
+            ) {
+                Row(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                        .clickable { },
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(start = 15.dp, end = 5.dp, top = 2.dp, bottom = 2.dp),
+                        text = "Today",
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                    Icon(
+                        imageVector = Icons.Filled.ArrowDropDown,
+                        contentDescription = null
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                }
+            }
         }
         Column(
             modifier = Modifier
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-                .background(color = MaterialTheme.colorScheme.surfaceContainer)
-                .padding(30.dp)
-                .fillMaxSize(),
+                .padding(25.dp)
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            HomeScreenSaleCard(todaySaleAmount, todayBills)
-            Spacer(modifier = Modifier.height(10.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                EarningsCard(todayEarnigs)
-                Spacer(modifier = Modifier.width(10.dp))
-                InventoryItemCard(instockItems)
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-//            CustomerCard()
-            Spacer(modifier = Modifier.height(10.dp))
-//            GraphCard()
+            GlanceCard(SaleAmount, numberOfBills)
+            Spacer(modifier = Modifier.height(15.dp))
+            EarningsCard(earnings, availableInventoryItems, customers)
         }
     }
 }
 
 @Composable
-fun HomeScreenSaleCard(
-    todaysaleamount: Double,
-    todayBills: Int,
+fun GlanceCard(
+    saleAmount: Double,
+    numberOfBills: Int,
 ) {
     Card(
-        modifier = Modifier
-            .width(330.dp)
-            .height(150.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background,
-        ),
+        modifier = Modifier.width(350.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,),
         shape = RoundedCornerShape(20.dp)
     ) {
         Column(
-            modifier = Modifier
-                .padding(20.dp)
-                .fillMaxSize(),
+            modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = GetTodaysDayAndDateLegacy(),
                 style = MaterialTheme.typography.titleSmall
             )
+            Spacer(modifier = Modifier.height(15.dp))
             Text(
-                text = "₹%,.2f".format(todaysaleamount),
+                text = "₹%,.2f".format(saleAmount),
                 style = MaterialTheme.typography.displayMedium,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
             )
+            Spacer(modifier = Modifier.height(15.dp))
             Text(
-                text = "No.Of Bills: $todayBills",
+                text = "No.Of Bills: $numberOfBills",
                 style = MaterialTheme.typography.titleSmall
             )
         }
@@ -119,131 +142,90 @@ fun HomeScreenSaleCard(
 
 @Composable
 fun EarningsCard(
-    todayEarnigs: Double
+    earnings: Double,
+    availableInventoryItems: Int,
+    customers: Int,
 ) {
     Card(
-        modifier = Modifier
-            .width(160.dp)
-            .height(100.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background,
-        ),
+        modifier = Modifier.width(350.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,),
         shape = RoundedCornerShape(20.dp)
-
     ) {
         Column(
-            modifier = Modifier
-                .padding(15.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceAround
+            modifier = Modifier.padding(20.dp),
         ) {
             Text(
                 text = "Earnings",
                 style = MaterialTheme.typography.titleSmall
             )
+            Spacer(modifier = Modifier.height(15.dp))
             Text(
-                text = "₹%,.2f".format(todayEarnigs),
-
-                style = MaterialTheme.typography.headlineLarge,
-                overflow = TextOverflow.Ellipsis
+                text = "₹%,.2f".format(earnings),
+                style = MaterialTheme.typography.displayMedium,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
             )
-        }
-    }
-}
-
-@Composable
-fun CustomerCard() {
-    Card(
-        modifier = Modifier
-            .width(650.dp)
-            .height(60.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background,
-        ),
-        shape = RoundedCornerShape(20.dp)
-
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.width(20.dp))
-                Box {
-                    Icon(
-                        imageVector = Icons.Filled.People,
-                        contentDescription = "people"
-                    )
-                }
-                Spacer(modifier = Modifier.width(20.dp))
-                Box(
-                    modifier = Modifier.weight(0.7f)
-                ) {
-                    Text(
-                        text = "Customers",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
-                Box(
-                    modifier = Modifier.weight(0.3f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "69",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
+            Spacer(modifier = Modifier.height(20.dp))
+            Row {
+                InventoryItemCard(availableInventoryItems)
+                Spacer(modifier = Modifier.width(10.dp))
+                CustomerCard(customers)
             }
         }
-
     }
 }
 
 @Composable
-fun GraphCard() {
+fun CustomerCard(
+    customers: Int
+) {
     Card(
-        modifier = Modifier
-            .width(650.dp)
-            .height(200.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background,
-        ),
-        shape = RoundedCornerShape(25.dp)
-
+        modifier = Modifier.width(150.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background,),
+        shape = RoundedCornerShape(20.dp)
     ) {
-
+        Column(
+            modifier = Modifier.padding(15.dp),
+        ) {
+            Text(
+                text = "Customers",
+                style = MaterialTheme.typography.titleSmall
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Row {
+                Icon(
+                    imageVector = Icons.Filled.People,
+                    contentDescription = "customers"
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = "$customers",
+                    style = MaterialTheme.typography.headlineLarge,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
+            }
+        }
     }
 }
 
 @Composable
 fun InventoryItemCard(
-    inventoryItems: Int
+    availableInventoryItems: Int
 ) {
     Card(
-        modifier = Modifier
-            .width(160.dp)
-            .height(100.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background,
-        ),
+        modifier = Modifier.width(150.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background,),
         shape = RoundedCornerShape(20.dp)
-
     ) {
         Column(
-            modifier = Modifier
-                .padding(15.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceAround
+            modifier = Modifier.padding(15.dp),
         ) {
             Text(
                 text = "Inventory",
                 style = MaterialTheme.typography.titleSmall
             )
+            Spacer(modifier = Modifier.height(10.dp))
             Row {
                 Icon(
                     imageVector = Icons.Filled.Inventory,
@@ -251,20 +233,20 @@ fun InventoryItemCard(
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = inventoryItems.toString(),
+                    text = availableInventoryItems.toString(),
                     style = MaterialTheme.typography.headlineLarge,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
                 )
             }
-
         }
     }
 }
 
-
 @Preview(showSystemUi = true, uiMode = UI_MODE_NIGHT_YES)
 @Preview(showSystemUi = true)
 @Composable
-private fun UniveralPreview() {
+private fun UniversalPreview() {
     NxtVentoryTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),

@@ -179,7 +179,7 @@ fun UserDetailText(userDetails: Map<String, Any>?, detail: String) {
             text = "${detail.replaceFirstChar { it.uppercaseChar() }} : ${
                 user[detail].toString().replaceFirstChar { it.uppercaseChar() }
             }",
-            style = MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.labelLarge
         )
     }
 }

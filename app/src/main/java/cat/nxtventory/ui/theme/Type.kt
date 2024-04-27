@@ -47,7 +47,7 @@ val myTypography = Typography(
     headlineSmall = TextStyle(
         fontFamily = Montserrat,
         fontWeight = FontWeight.Bold,
-        fontSize = 16.sp // Adjust the font size as needed
+        fontSize = 12.sp // Adjust the font size as needed
     ),
     titleLarge = TextStyle(
         fontFamily = Montserrat,
