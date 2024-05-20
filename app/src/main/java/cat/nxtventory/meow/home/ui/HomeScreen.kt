@@ -3,7 +3,6 @@ package cat.nxtventory.meow.home.ui
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -37,7 +35,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cat.nxtventory.meow.home.data.GetTodaysDayAndDateLegacy
-import cat.nxtventory.meow.home.data.HomeScreenSampleData
 import cat.nxtventory.meow.home.data.HomeScreenSampleData.SaleAmount
 import cat.nxtventory.meow.home.data.HomeScreenSampleData.availableInventoryItems
 import cat.nxtventory.meow.home.data.HomeScreenSampleData.customers
@@ -68,7 +65,7 @@ fun HomeScreen(innerPadding: PaddingValues) {
                 modifier = Modifier
                     .weight(0.5f)
                     .fillMaxWidth(),
-               contentAlignment = Alignment.CenterEnd
+                contentAlignment = Alignment.CenterEnd
             ) {
                 Row(
                     modifier = Modifier
@@ -113,7 +110,7 @@ fun GlanceCard(
 ) {
     Card(
         modifier = Modifier.width(350.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         shape = RoundedCornerShape(20.dp)
     ) {
         Column(
@@ -148,7 +145,7 @@ fun EarningsCard(
 ) {
     Card(
         modifier = Modifier.width(350.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         shape = RoundedCornerShape(20.dp)
     ) {
         Column(
@@ -181,7 +178,7 @@ fun CustomerCard(
 ) {
     Card(
         modifier = Modifier.width(150.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background,),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
         shape = RoundedCornerShape(20.dp)
     ) {
         Column(
@@ -215,7 +212,7 @@ fun InventoryItemCard(
 ) {
     Card(
         modifier = Modifier.width(150.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background,),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
         shape = RoundedCornerShape(20.dp)
     ) {
         Column(
