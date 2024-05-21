@@ -54,7 +54,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -71,11 +70,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-
-
     implementation(libs.androidx.navigation.compose) // Navigation Compose
     implementation(libs.androidx.material.icons.extended.android) // Material Icons Extended
-
 
     implementation(libs.voyager.navigator) // Navigator
     implementation(libs.voyager.tab.navigator) // TabNavigator
@@ -87,8 +83,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
 
     // Supabase
-    implementation(platform("io.github.jan-tennert.supabase:bom:2.2.3"))
+    implementation(platform("io.github.jan-tennert.supabase:bom:2.4.2"))
     implementation("io.github.jan-tennert.supabase:postgrest-kt")
-    implementation("io.ktor:ktor-client-android:2.3.10")
+    implementation("io.ktor:ktor-client-android:2.3.11")
 
 }
